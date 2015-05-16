@@ -27,8 +27,8 @@ class eight_min_date{
     public function register($open_id){
         $sex=$target_id=$talking=$wechat_id=$start_time=$want_to_talk=$step=0;
         $gdpu_talk_times = 3;
-        $real_first_talk_times = 3;
-        $left_talk_times = 3;
+        $real_first_talk_times = 9;
+        $left_talk_times = 10;
         $waiting_people = 99;
         $waiting_start_time=$record_waiting_start_time_flag=$transfer=0;
         $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer')";
@@ -380,7 +380,6 @@ class eight_min_date{
     }
 
     public function sendmsg($open_id,$content,$type,$video_id){
-
         $sql = "SELECT `token` FROM `gdpu_token` where `Id`='1'";
         $result=mysql_query($sql);
         $array=mysql_fetch_array($result);
@@ -429,7 +428,6 @@ class eight_min_date{
 
         
         $code =self::my_json_encode($data);
-        var_dump($code);
         //$param = preg_replace("/\u([0-9a-f]{4})/ie", "iconv('UCS-2', 'UTF-8', pack('H*', '$1'));", $param);
         $ch = curl_init(); 
 

@@ -133,10 +133,10 @@ eot;
                             $date_ret = "你已经在聊天了喔\n";
                         else {
                             /* Delete in Ours */
-                            if($date_user->get_gdpu_talk_times($from) == 0) {
-                                $date_ret = "要关注我们公众号体验\n";
-                                return $date_ret;
-                            }
+//                            if($date_user->get_gdpu_talk_times($from) == 0) {
+//                                $date_ret = "要关注我们公众号体验\n";
+//                                return $date_ret;
+//                            }
 
                             /* Delete in Gdpuer */
                             if($date_user->get_real_first_talk_times($from)==0 && $date_user->is_transfer($from)==0) {
@@ -196,7 +196,8 @@ eot;
                 $content = $request ['MediaId'];
                 //$content = $w->get_media_id();
                 $date_user->sendmsg($target, $content, $type, $video_id);
-                $content = $date_user->caculate_left_time($from);
+                $content = "";
+                //$content = $date_user->caculate_left_time($from);
             }else {
                 if($date_user->is_transfer($from)==0 && $w->get_msg_type () == "image") {
                     $date_user->update_transfer($from);
@@ -244,7 +245,7 @@ eot;
                 $type = "text";
                 $date_user->sendmsg($target, $content, $type, NULL);
                 $content = $date_user->caculate_left_time($from);
-                $content ="dada";
+                $content ="";
                 return $content;
             }
         }
