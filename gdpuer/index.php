@@ -61,11 +61,11 @@ eot;
         $this->request = ( array ) simplexml_load_string ( $postStr, 'SimpleXMLElement', LIBXML_NOCDATA );
         $myfrom = $this->request['FromUserName'];
         if($date_user->is_talking($myfrom)) {
-            $target = $date_user->get_target($myfrom);
-            $content = $date_user->filt_wechat_num($content);
-            $type = "text";
-            $date_user->sendmsg($target, $content, $type, NULL);
-            $content = $date_user->caculate_left_time($myfrom);
+//            $target = $date_user->get_target($myfrom);
+//            $content = $date_user->filt_wechat_num($content);
+//            $type = "text";
+//            $date_user->sendmsg($target, $content, $type, NULL);
+//            $content = $date_user->caculate_left_time($myfrom);
             echo "success";
             exit;
         }else {
@@ -73,7 +73,6 @@ eot;
                 $message = self::reply_main($this->request, $this);//reply_main
 
                 if (!is_array($message)) {
-                    $message = $myfrom;
                     $ret = $this->replyText($message);
                 }
                 echo $ret;
