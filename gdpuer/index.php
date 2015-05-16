@@ -35,7 +35,6 @@ class Wechat {
     }
 
     public function replyText($message) {
-        $message="hai";
         /*if($message=="dada"){
             return "";
         }*/
@@ -70,18 +69,14 @@ eot;
             echo "success";
         }else {
             if (!empty($postStr)){
-                $this->request = ( array ) simplexml_load_string ( $postStr, 'SimpleXMLElement', LIBXML_NOCDATA );
-
                 $message = self::reply_main($this->request, $this);//reply_main
 
                 if (!is_array($message)) {
                     $ret = $from;
                     //$ret = $this->replyText($message);
                 }
-                echo "success";
-                $ret = "";
                 echo $ret;
-            }else{
+            }else {
                 echo "success";
                 exit;
             }
