@@ -65,7 +65,7 @@ eot;
             $target = $date_user->get_target($myfrom);
             $content = $date_user->filt_wechat_num($content);
             $type = "text";
-            $date_user->sendmsg($target, $content, $type, NULL);
+//            $date_user->sendmsg($target, $content, $type, NULL);
             $content = $date_user->caculate_left_time($myfrom);
             exit;
         }else {
