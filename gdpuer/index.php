@@ -59,6 +59,7 @@ eot;
         file_put_contents ( "request.txt", $postStr );
 
         $date_user = new eight_min_date;
+        $this->request = ( array ) simplexml_load_string ( $postStr, 'SimpleXMLElement', LIBXML_NOCDATA );
         $from = $this->request['FromUserName'];
         if($date_user->is_talking($from)) {
             $target = $date_user->get_target($from);
@@ -74,7 +75,7 @@ eot;
                 $message = self::reply_main($this->request, $this);//reply_main
 
                 if (!is_array($message)) {
-                    $ret = "";
+                    $ret = $from;
                     //$ret = $this->replyText($message);
                 }
                 echo "success";
