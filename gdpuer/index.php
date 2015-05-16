@@ -243,7 +243,7 @@ eot;
             }else {
                 if($date_user->is_transfer($from)==0 && $w->get_msg_type () == "image") {
                     $date_user->update_transfer($from);
-                    $content = "thank you for your is_transfer\n";
+                    $content = "thank you for your transfer\n谢谢你的转发，欢迎继续使用八分钟约会";
                 }else {
                     $content = "咦,我也有这东西喔\n";
                 }
