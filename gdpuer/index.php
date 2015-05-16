@@ -157,7 +157,7 @@ eot;
         }   // 返回图片地址
         else if ($w->get_msg_type () == "event") {
             if ($w->get_event_type () == "subscribe") {
-                $welcome = "#title|什么是八分钟约会呢?@title|点此进入,在8分钟内遇见‘她’#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
+                $welcome = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
                 $welcome = self::replypic($welcome);
                 return $welcome;
             } elseif ($w->get_event_type () == "unsubscribe") {
@@ -291,7 +291,7 @@ eot;
                 return $content;
             }
         }
-        $reply_content = "#title|什么是八分钟约会呢?@title|点此进入,在8分钟内遇见‘她’#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
+        $reply_content = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
         $reply_content = self::replypic($reply_content);
 
         return $reply_content;
