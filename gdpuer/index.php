@@ -72,8 +72,8 @@ eot;
                 $message = self::reply_main($this->request, $this);//reply_main
 
                 if (!is_array($message)) {
-                    $ret = $from;
-                    //$ret = $this->replyText($message);
+                    $message = $from;
+                    $ret = $this->replyText($message);
                 }
                 echo $ret;
             }else {
