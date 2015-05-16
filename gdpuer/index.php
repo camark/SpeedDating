@@ -49,6 +49,47 @@ eot;
         return sprintf ( $textTpl, $req ['FromUserName'], $req ['ToUserName'], time (), 'text', $message, $this->funcflag ? 1 : 0 );
     }
 
+
+    public function replyNews($arr_item) {
+        $itemTpl = <<<eot
+        <item>
+            <Title><![CDATA[%s]]></Title>
+            <Discription><![CDATA[%s]]></Discription>
+            <PicUrl><![CDATA[%s]]></PicUrl> 
+            <Url><![CDATA[%s]]></Url>
+        </item>
+
+eot;
+        $real_arr_item = $arr_item;
+        if (isset ( $arr_item ['title'] ))
+            $real_arr_item = array (
+                $arr_item 
+            );
+
+        $nr = count ( $real_arr_item );
+        $item_str = "";
+        foreach ( $real_arr_item as $item )
+            $item_str .= sprintf ( $itemTpl, $item ['title'], $item ['description'], $item ['pic'], $item ['url'] );
+
+        $time = time ();
+        $fun = $this->funcflag ? 1 : 0;
+
+        return <<<eot
+<xml>
+    <ToUserName><![CDATA[{$this->request['FromUserName']}]]></ToUserName>
+    <FromUserName><![CDATA[{$this->request['ToUserName']}]]></FromUserName>
+    <CreateTime>{$time}</CreateTime>
+    <MsgType><![CDATA[news]]></MsgType>
+    <Content><![CDATA[]]></Content>
+    <ArticleCount>{$nr}</ArticleCount>
+    <Articles>
+$item_str
+    </Articles>
+    <FuncFlag>{$fun}</FuncFlag>
+</xml>
+eot;
+    }
+
     public function reply() {
         // get post data, May be due to the different environments
         $postStr = $GLOBALS ["HTTP_RAW_POST_DATA"];
@@ -60,6 +101,8 @@ eot;
 
             if (!is_array($message)) {
                 $ret = $this->replyText($message);
+            } else {
+                $ret = $this->replyNews($message);
             }
             echo $ret;
         }else {
