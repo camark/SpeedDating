@@ -182,7 +182,7 @@ eot;
 
                             /* Delete in Gdpuer */
                             if($date_user->get_real_first_talk_times($from)==0 && $date_user->is_transfer($from)==0) {
-                                $date_ret = "请回复任意消息，获取图文介绍转发到朋友圈，截图回复给我们继续使用,谢谢！！\n";
+                                $date_ret = "请点击详情介绍，获取图文介绍转发到朋友圈，截图回复给我们继续使用,谢谢！！\n";
                                 return $date_ret;
                             }
 
@@ -201,8 +201,8 @@ eot;
                     }
                     return $date_ret;
                     break;
-                case 'about':
-                    $about = "小助手由ourstudio工作室开发运营";
+                case 'chat':
+                    $about = "合作联系微信号 jiamingpeng1994 或 Hyhhhha";
                     return $about;
                     break;
                 case 'jianshe':

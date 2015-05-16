@@ -24,19 +24,30 @@ $hehe= unicode2utf8("\ue02d");
 $data='{
     "button": [
         
+        {    
+          "type":"click",
+          "name":"八分钟约会",
+          "key":"date"
+        },
+        {    
+               "type":"view",
+               "name":"详情介绍",
+               "url":"http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd"
+            },
         {
-            "name": "八分钟约会", 
+            "name": "more", 
             "sub_button": [
                 
-                {
-                    "type": "click", 
-                    "name": "八分钟约会", 
-                    "key": "date"
-                },
+                
                 {
                     "type": "click", 
                     "name": "more", 
                     "key": "jianshe"
+                },
+                {
+                    "type": "click", 
+                    "name": "合作联系", 
+                    "key": "chat"
                 }
             
             ]
