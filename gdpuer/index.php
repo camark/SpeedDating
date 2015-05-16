@@ -248,6 +248,8 @@ eot;
                 return $content;
             }
         }
+        $reply_content = "#title|什么是八分钟约会呢?@title|点此进入,在8分钟内遇见‘他’#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic";//|http://av.jejeso.com/Ours/eightmins/8.jpg
+        $reply_content = self::replypic($reply_content);
 
         return $reply_content;
     }
