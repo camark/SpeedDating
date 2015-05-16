@@ -1,6 +1,4 @@
 <?php
-require_once ("../api/webAPI.php");
-require_once ("../api/user.php");
 require_once ("../api/date.php");
 class Wechat {
     public $token;
@@ -35,9 +33,8 @@ class Wechat {
     }
 
     public function replyText($message) {
-        /*if($message=="dada"){
+        if($message == "")
             return "";
-        }*/
         $textTpl = <<<eot
 <xml>
     <ToUserName><![CDATA[%s]]></ToUserName>
@@ -55,33 +52,19 @@ eot;
     public function reply() {
         // get post data, May be due to the different environments
         $postStr = $GLOBALS ["HTTP_RAW_POST_DATA"];
-        file_put_contents ( "request.txt", $postStr );
+    //    file_put_contents ( "request.txt", $postStr );
 
-        $date_user = new eight_min_date;
-        $this->request = ( array ) simplexml_load_string ( $postStr, 'SimpleXMLElement', LIBXML_NOCDATA );
-        $myfrom = $this->request['FromUserName'];
-        if($date_user->is_talking($myfrom)) {
-            echo "success";
-            $target = $date_user->get_target($myfrom);
-            $content = "fuck you.";
-            $content = $date_user->filt_wechat_num($content);
-            $type = "text";
-//            sleep(20);
-            $date_user->sendmsg($target, $content, $type, NULL);
-            $content = $date_user->caculate_left_time($myfrom);
-            exit;
-        }else {
-            if (!empty($postStr)){
-                $message = self::reply_main($this->request, $this);//reply_main
+        if (!empty($postStr)){
+            $this->request = ( array ) simplexml_load_string ( $postStr, 'SimpleXMLElement', LIBXML_NOCDATA );
+            $message = self::reply_main($this->request, $this);//reply_main
 
-                if (!is_array($message)) {
-                    $ret = $this->replyText($message);
-                }
-                echo $ret;
-            }else {
-                echo "success";
-                exit;
+            if (!is_array($message)) {
+                $ret = $this->replyText($message);
             }
+            echo $ret;
+        }else {
+            echo "success";
+            exit;
         }
     }
     private function checkSignature() {
@@ -143,7 +126,6 @@ eot;
             // 点击菜单
             elseif ($w->get_event_type () == "click") {
                 $menukey = $w->get_event_key ();
-                $g = new WebAPI ();
                 switch ($menukey) {
                 case 'date':
                     if($date_user->is_register($from)) {
@@ -226,10 +208,6 @@ eot;
             return $content;
         }
 
-        /**
-         *  $content:获取http的content字段
-         *  $reply_content:返回处理结果
-         */
         else if ($w->get_msg_type () == "text"){
             $content = trim ( $request ['Content'] );
             if($date_user->get_step($from) == 2) {
@@ -260,15 +238,15 @@ eot;
                 return $content;
             }
 
-//            if($date_user->is_talking($from)) {
-//                $target = $date_user->get_target($from);
-//                $content = $date_user->filt_wechat_num($content);
-//                $type = "text";
-//                $date_user->sendmsg($target, $content, $type, NULL);
-//                $content = $date_user->caculate_left_time($from);
-//                $content ="dada";
-//                return $content;
-//            }
+            if($date_user->is_talking($from)) {
+                $target = $date_user->get_target($from);
+                $content = $date_user->filt_wechat_num($content);
+                $type = "text";
+                $date_user->sendmsg($target, $content, $type, NULL);
+                $content = $date_user->caculate_left_time($from);
+                $content ="dada";
+                return $content;
+            }
         }
 
         return $reply_content;
