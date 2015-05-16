@@ -451,7 +451,6 @@ class eight_min_date{
 
         curl_close($ch);
 
-        var_dump($info);
     }
     //
 
