@@ -58,20 +58,32 @@ eot;
         $postStr = $GLOBALS ["HTTP_RAW_POST_DATA"];
         file_put_contents ( "request.txt", $postStr );
 
-        if (!empty($postStr)){
-            $this->request = ( array ) simplexml_load_string ( $postStr, 'SimpleXMLElement', LIBXML_NOCDATA );
-
-            $message = self::reply_main($this->request, $this);//reply_main
-
-            if (!is_array($message)) {
-                $ret = "";
-                //$ret = $this->replyText($message);
-            }
-            $ret = "";
-            echo $ret;
-        }else{
+        $date_user = new eight_min_date;
+        $from = $this->request['FromUserName'];
+        if($date_user->is_talking($from)) {
+            $target = $date_user->get_target($from);
+            $content = $date_user->filt_wechat_num($content);
+            $type = "text";
+            $date_user->sendmsg($target, $content, $type, NULL);
+            $content = $date_user->caculate_left_time($from);
             echo "success";
-            exit;
+        }else {
+            if (!empty($postStr)){
+                $this->request = ( array ) simplexml_load_string ( $postStr, 'SimpleXMLElement', LIBXML_NOCDATA );
+
+                $message = self::reply_main($this->request, $this);//reply_main
+
+                if (!is_array($message)) {
+                    $ret = "";
+                    //$ret = $this->replyText($message);
+                }
+                echo "success";
+                $ret = "";
+                echo $ret;
+            }else{
+                echo "success";
+                exit;
+            }
         }
     }
     private function checkSignature() {
@@ -250,15 +262,15 @@ eot;
                 return $content;
             }
 
-            if($date_user->is_talking($from)) {
-                $target = $date_user->get_target($from);
-                $content = $date_user->filt_wechat_num($content);
-                $type = "text";
-                $date_user->sendmsg($target, $content, $type, NULL);
-                $content = $date_user->caculate_left_time($from);
-                $content ="dada";
-                return $content;
-            }
+//            if($date_user->is_talking($from)) {
+//                $target = $date_user->get_target($from);
+//                $content = $date_user->filt_wechat_num($content);
+//                $type = "text";
+//                $date_user->sendmsg($target, $content, $type, NULL);
+//                $content = $date_user->caculate_left_time($from);
+//                $content ="dada";
+//                return $content;
+//            }
         }
 
         return $reply_content;
