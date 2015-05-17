@@ -240,8 +240,7 @@ eot;
                 $content = $request ['MediaId'];
                 //$content = $w->get_media_id();
                 $date_user->sendmsg($target, $content, $type, $video_id);
-                $content = "";
-                //$content = $date_user->caculate_left_time($from);
+                $content = $date_user->caculate_left_time($from);
             }else {
                 if($date_user->is_transfer($from)==0 && $w->get_msg_type () == "image") {
                     $date_user->update_transfer($from);
