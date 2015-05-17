@@ -174,7 +174,7 @@ eot;
                         if($date_user->is_talking($from)) {
                             $date_ret = "你已经在聊天了喔\n";
                         }else if($date_user->get_sex($from) == -1) {
-                            $date_ret = "请完成注册先";
+                            $date_ret = "请先完成注册";
                         }else {
                             /* Delete in Ours */
 //                            if($date_user->get_gdpu_talk_times($from) == 0) {
@@ -198,7 +198,7 @@ eot;
                     }else {
                         $step = 1;
                         $date_user->register($from);
-                        $date_user->update_step($from, $step, 4);
+                        $date_user->update_step($from, $step);
                         $date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，电子邮箱地址;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n下面请回复y继续使用";
                     }
                     return $date_ret;
@@ -255,28 +255,28 @@ eot;
 
         else if ($w->get_msg_type () == "text"){
             $content = trim ( $request ['Content'] );
-            if($date_user->get_step($from) == 2) {
+            if($date_user->get_step($from) == 1) {
                 $step = 2;
-                $date_user->update_step($from, $step, 4);
+                $date_user->update_step($from, $step);
                 $content = "请正确输入您的微信号或手机号\n";
                 return $content;
             }
-            if($date_user->get_step($from) == 3) {
+            if($date_user->get_step($from) == 2) {
                 $date_user->update_wechat_id($from, $content);
                 $step = 3;
-                $date_user->update_step($from, $step, 4);
+                $date_user->update_step($from, $step);
                 $content = "现在请输入你的性别(男或女)";
                 return $content;
             }
 
-            if($date_user->get_step($from) == 4) {
+            if($date_user->get_step($from) == 3) {
                 if (strstr ( $content, '女' ) || strstr ( $content, '0' )) {
                     $sex = 0;
                 }else
                     $sex = 1;
                 $start_time = time();
                 $step = 4;
-                $date_user->update_step($from, $step, 4);
+                $date_user->update_step($from, $step);
                 $want_to_talk = 1;
                 $date_user->update_all($from, $sex, $start_time, $want_to_talk);
                 $content = $date_user->find_target_to_talk($from);
@@ -289,7 +289,6 @@ eot;
                 $type = "text";
                 $date_user->sendmsg($target, $content, $type, NULL);
                 $content = $date_user->caculate_left_time($from);
-                $content ="";
                 return $content;
             }
         }

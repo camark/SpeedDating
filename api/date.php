@@ -298,6 +298,8 @@ class eight_min_date{
     }
 
     public function stop_talking($open_id){
+        $step = 4;
+        self::update_step($open_id, $step);
         $sql = "UPDATE `gdpu_date` SET `talking` = 0 WHERE `open_id` = '$open_id' ";
         mysql_query($sql);
 
@@ -331,11 +333,7 @@ class eight_min_date{
     }
 
     /* Use this function to implement session. */
-    public function update_step($open_id, $step, $finish_step){
-        if($step == $finish_step)
-            $step = 0;
-        else
-            $step++;
+    public function update_step($open_id, $step){
         $sql = "UPDATE `gdpu_date` SET `step` = '$step' WHERE `open_id` = '$open_id' ";
         mysql_query($sql);
     }
@@ -357,13 +355,20 @@ class eight_min_date{
             $content = self::stop_talking($open_id);
         else {
             $min = 8 - $min;
-            if($min == 0) {
+            if(self::get_step($open_id)==5 && $min==0) {
                 $min = date('s', $time_gap);
                 $min = 60 - $min;
                 $min .= "秒";
-            }else
+                $content = "你们的聊天还剩下".$min."哦:) \n";
+                $step = 6;
+                self::update_step($open_id, $step);
+            }else if(self::get_step($open_id)==4 && $min == 4) {
                 $min .= "分钟";
-            $content = "你们的聊天还剩下".$min."哦:) \n";
+                $content = "你们的聊天还剩下".$min."哦:) \n";
+                $step = 5;
+                self::update_step($open_id, $step);
+            }else
+                $content = "";
         }
         return $content;
     }
