@@ -171,12 +171,11 @@ eot;
                 switch ($menukey) {
                 case 'date':
                     if($date_user->is_register($from)) {
-                        if($date_user->is_talking($from)){
-                            $date_ret = "你已经在聊天了喔\n";}
-                            else if($data_ret->get_sex($from)==-1){
-                                $date_ret = "请完成注册先";
-                            }
-                        else {
+                        if($date_user->is_talking($from)) {
+                            $date_ret = "你已经在聊天了喔\n";
+                        }else if($data_user->get_sex($from) == -1) {
+                            $date_ret = "请完成注册先";
+                        }else {
                             /* Delete in Ours */
 //                            if($date_user->get_gdpu_talk_times($from) == 0) {
 //                                $date_ret = "要关注我们公众号体验\n";
@@ -259,7 +258,7 @@ eot;
             if($date_user->get_step($from) == 2) {
                 $step = 2;
                 $date_user->update_step($from, $step, 4);
-                $content = "请正确输入您的微信号，否则你将收不到别人的信息，输入后即不可更改\n";
+                $content = "请正确输入您的微信号或手机号\n";
                 return $content;
             }
             if($date_user->get_step($from) == 3) {
