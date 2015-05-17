@@ -25,7 +25,8 @@ class eight_min_date{
     }
 
     public function register($open_id){
-        $sex=$target_id=$talking=$wechat_id=$start_time=$want_to_talk=$step=0;
+        $sex= -1;
+        $target_id=$talking=$wechat_id=$start_time=$want_to_talk=$step=0;
         $gdpu_talk_times = 3;
         $real_first_talk_times = 9;
         $left_talk_times = 10;
