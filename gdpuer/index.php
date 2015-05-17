@@ -171,8 +171,11 @@ eot;
                 switch ($menukey) {
                 case 'date':
                     if($date_user->is_register($from)) {
-                        if($date_user->is_talking($from))
-                            $date_ret = "你已经在聊天了喔\n";
+                        if($date_user->is_talking($from)){
+                            $date_ret = "你已经在聊天了喔\n";}
+                            else if($data_ret->get_sex($from)==-1){
+                                $date_ret = "请完成注册先";
+                            }
                         else {
                             /* Delete in Ours */
 //                            if($date_user->get_gdpu_talk_times($from) == 0) {
