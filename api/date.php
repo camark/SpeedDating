@@ -37,7 +37,7 @@ class eight_min_date{
     }
 
     public function filt_wechat_num($content) {
-        $pattern = '(\w{5,})';
+        $pattern = '(\w{6,})';
         $replacement = ' ';
         $content = preg_replace($pattern, $replacement, $content);
         return $content;
@@ -274,7 +274,7 @@ class eight_min_date{
             mysql_query($sql);
 
             $talking_id = $array['Id'];
-            $msg = "已经成功匹配了,你在跟代号为".$talking_id."的人聊天\n";
+            $msg = "已经成功匹配了,你在跟代号为".$talking_id."的人聊天\n发图片和语音聊天更有趣喔\n";
             $type = 'text';
             $video_id = 0;
             self::sendmsg($open_id, $msg, $type, $video_id);
@@ -283,7 +283,7 @@ class eight_min_date{
             $result = mysql_query($sql);
             $array = mysql_fetch_array($result);
             $talking_id = $array['Id'];
-            $msg = "已经成功匹配了,你在跟代号为".$talking_id."的人聊天\n";
+            $msg = "已经成功匹配了,你在跟代号为".$talking_id."的人聊天\n发图片和语音聊天更有趣喔\n";
             self::sendmsg($target_id, $msg, $type, $video_id);
 
             $add = 2;//only excute once
