@@ -177,7 +177,9 @@ eot;
                 switch ($menukey) {
                 case 'date':
                     if(!$date_user->is_register($from)) {
+                        $step = 1;
                         $date_user->register($from);
+                        $date_user->update_step($from, $step);
                         $date_ret = "请先输入男或女来完成注册\n";
                         return $date_ret;
                     }
