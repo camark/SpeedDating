@@ -142,7 +142,7 @@ eot;
 
     function reply_main($request, $w) {
         $to = $request ['ToUserName'];
-        $from = $request ['FromUserName'];
+        $open_id = $request ['FromUserName'];
         $reply_content ="";
 
         $date_user = new eight_min_date;
@@ -152,18 +152,18 @@ eot;
         if ($w->get_msg_type () == "location") {
             $lacation = "x@" . ( string ) $request ['Location_X'] . "@" . ( string ) $request ['Location_Y'];
             $lacation = urlencode ( str_replace ( '\.', '\\\.', $lacation ) );
-            $lacation = urldecode ( xiaojo ( $lacation, $from, $to ) );
+            $lacation = urldecode ( xiaojo ( $lacation, $open_id, $to ) );
             return $lacation;
         }   // 返回图片地址
         else if ($w->get_msg_type () == "event") {
             if ($w->get_event_type () == "subscribe") {
-                if($date_user->is_register($from)) {
+                if($date_user->is_register($open_id)) {
                     $date_ret = "你已经完成注册了，请点击左下角按钮继续使用\n";
                 }else {
                     $date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：\n1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，微信号;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n请输入性别： 男或女";
                     $step = 1;
-                    $date_user->register($from);
-                    $date_user->update_step($from, $step);
+                    $date_user->register($open_id);
+                    $date_user->update_step($open_id, $step);
                 }
                 return $date_ret;
             }elseif ($w->get_event_type () == "unsubscribe") {
@@ -176,42 +176,42 @@ eot;
                 $menukey = $w->get_event_key ();
                 switch ($menukey) {
                 case 'qbt':
-                        $Id = $date_user->get_Id($from);
-                        $qbt = $date_user->get_qbt($from);
-                        $invitation_code = $date_user->get_invitation_code($from);
+                        $Id = $date_user->get_Id($open_id);
+                        $qbt = $date_user->get_qbt($open_id);
+                        $invitation_code = $date_user->get_invitation_code($open_id);
                         $date_ret = "你的丘比特之箭的数量是".$qbt."\n个人专属码(Id)是".$Id."\n当好友关注后输入你的专属码注册，两人皆可以获得一支丘比特之箭，\n可以使用该道具来续聊和免排队哦";
                         return $date_ret;
                         break;
                 case 'date':
-                    if(!$date_user->is_register($from)) {
+                    if(!$date_user->is_register($open_id)) {
                         $step = 1;
-                        $date_user->register($from);
-                        $date_user->update_step($from, $step);
+                        $date_user->register($open_id);
+                        $date_user->update_step($open_id, $step);
                         $date_ret = "请先输入男或女来完成注册\n";
                         return $date_ret;
                     }
-                    if($date_user->is_talking($from)) {
+                    if($date_user->is_talking($open_id)) {
                         $date_ret = "你已经在聊天了喔\n";
-                    }else if($date_user->get_sex($from) == -1) {
+                    }else if($date_user->get_sex($open_id) == -1) {
                         $date_ret = "请先输入男或女来完成注册\n";
                     }else {
                         /* Delete in Ours */
-                        //                            if($date_user->get_gdpu_talk_times($from) == 0) {
+                        //                            if($date_user->get_gdpu_talk_times($open_id) == 0) {
                         //                                $date_ret = "要关注我们公众号体验\n";
                         //                                return $date_ret;
                         //                            }
 
                         /* Delete in Gdpuer */
-                        if($date_user->get_real_first_talk_times($from)==0 && $date_user->is_transfer($from)==0) {
+                        if($date_user->get_real_first_talk_times($open_id)==0 && $date_user->is_transfer($open_id)==0) {
                             $date_ret = "请点击详情介绍，获取图文介绍转发到朋友圈，截图回复给我们继续使用,谢谢！！\n";
                             return $date_ret;
                         }
 
-                        if($date_user->is_need_to_wait($from)) {
-                            $date_user->update_waiting_start_time($from);
-                            $date_ret = "你在排队中还有".$date_user->get_waiting_people($from)."人\n";
+                        if($date_user->is_need_to_wait($open_id)) {
+                            $date_user->update_waiting_start_time($open_id);
+                            $date_ret = "你在排队中还有".$date_user->get_waiting_people($open_id)."人\n";
                         }else
-                            $date_ret = $date_user->find_target_to_talk($from);
+                            $date_ret = $date_user->find_target_to_talk($open_id);
                         return $date_ret;
                     }
                     return $date_ret;
@@ -230,7 +230,7 @@ eot;
                     # code...
                     break;
                 }
-                //$menu = urldecode ( xiaojo ( $menukey, $from, $to ) );
+                //$menu = urldecode ( xiaojo ( $menukey, $open_id, $to ) );
                 //return $menu;
             }       // 点击菜单选项
             else {
@@ -240,7 +240,7 @@ eot;
         }
 
         else if ($w->get_msg_type () == "voice" || $w->get_msg_type () == "image" || $w->get_msg_type () == "video") {
-            if($date_user->is_talking($from)) {
+            if($date_user->is_talking($open_id)) {
                 $video_id = NULL;
                 if($w->get_msg_type () == "image")
                     $type = 'image';
@@ -250,14 +250,14 @@ eot;
                     $type = 'video';
                     $video_id = $request ['ThumbMediaId'];
                 }
-                $target = $date_user->get_target($from);
+                $target = $date_user->get_target($open_id);
                 $content = $request ['MediaId'];
                 //$content = $w->get_media_id();
                 $date_user->sendmsg($target, $content, $type, $video_id);
-                $content = $date_user->caculate_left_time($from);
+                $content = $date_user->caculate_left_time($open_id);
             }else {
-                if($date_user->is_transfer($from)==0 && $w->get_msg_type () == "image") {
-                    $date_user->update_transfer($from);
+                if($date_user->is_transfer($open_id)==0 && $w->get_msg_type () == "image") {
+                    $date_user->update_transfer($open_id);
                     $content = "thank you for your transfer\n谢谢你的转发，欢迎继续使用八分钟约会";
                 }else {
                     $content = "咦,我也有这东西喔\n";
@@ -268,21 +268,21 @@ eot;
 
         else if ($w->get_msg_type () == "text"){
             $content = trim ( $request ['Content'] );
-            //            if($date_user->get_step($from) == 1) {
+            //            if($date_user->get_step($open_id) == 1) {
             //                $step = 2;
-            //                $date_user->update_step($from, $step);
+            //                $date_user->update_step($open_id, $step);
             //                $content = "请正确输入您的微信号或手机号\n";
             //                return $content;
             //            }
-            //            if($date_user->get_step($from) == 2) {
-            //                $date_user->update_wechat_id($from, $content);
+            //            if($date_user->get_step($open_id) == 2) {
+            //                $date_user->update_wechat_id($open_id, $content);
             //                $step = 3;
-            //                $date_user->update_step($from, $step);
+            //                $date_user->update_step($open_id, $step);
             //                $content = "现在请输入你的性别(男或女)";
             //                return $content;
             //            }
             //
-            if($date_user->get_step($from) == 1) {
+            if($date_user->get_step($open_id) == 1) {
                 if (strstr ( $content, '女' )) {
                     $sex = 0;
                 }else if (strstr ( $content, '男' )) {
@@ -294,36 +294,36 @@ eot;
 
                 $start_time = time();
                 $step = 4;
-                $date_user->update_step($from, $step);
+                $date_user->update_step($open_id, $step);
                 //                $want_to_talk = 1;
                 $want_to_talk = 0;
-                $date_user->update_all($from, $sex, $start_time, $want_to_talk);
-                //                $content = $date_user->find_target_to_talk($from);
+                $date_user->update_all($open_id, $sex, $start_time, $want_to_talk);
+                //                $content = $date_user->find_target_to_talk($open_id);
                 $content = "恭喜，已经完成注册.\n1.如有邀请码，请现在输入邀请码获得神秘礼物\n2.请直接点击左下角按钮进行聊天\n";
                 return $content;
             }
 
-            if($date_user->is_talking($from)) {
+            if($date_user->is_talking($open_id)) {
                 if($content == "结束") {
-                    $date_user->stop_talking($from);
-                    $target = $date_user->get_target($from);
+                    $date_user->stop_talking($open_id);
+                    $target = $date_user->get_target($open_id);
                     $date_user->stop_talking($target);
                     $content = "你的聊天已结束，请继续享用我们的8分钟约会：P\n";
                 }else {
-                    $target = $date_user->get_target($from);
+                    $target = $date_user->get_target($open_id);
                     $content = $date_user->filt_wechat_num($content);
                     $type = "text";
                     $date_user->sendmsg($target, $content, $type, NULL);
-                    $content = $date_user->caculate_left_time($from);
+                    $content = $date_user->caculate_left_time($open_id);
                 }
                 return $content;
             }
         }
         if(preg_match('/^[0-9]*$/',$content)) {
-            if($date_user->get_invitation_code($content) == -1) {
+            if($date_user->get_invitation_code($open_id) == -1) {
                 if($date_user->check_invitation_code($content)) {
-                    $date_user->plus_twos_qbt($from, $content);
-                    $date_user->update_invitation_status($from, $content);
+                    $date_user->plus_twos_qbt($open_id, $content);
+                    $date_user->update_invitation_status($open_id, $content);
                     $reply_content = "恭喜邀请码使用成功，你跟邀请者皆获得丘比特之箭一支，可以使用它来续聊和免排队\n";
                 }else {
                     $reply_content = "输入邀请码错误\n";
