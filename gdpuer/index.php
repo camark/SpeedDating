@@ -199,7 +199,7 @@ eot;
                         $step = 1;
                         $date_user->register($from);
                         $date_user->update_step($from, $step);
-                        $date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，电子邮箱地址;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n下面请回复y继续使用";
+                        $date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，电子邮箱地址;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n请输入性别： 男或女";
                     }
                     return $date_ret;
                     break;
@@ -255,25 +255,30 @@ eot;
 
         else if ($w->get_msg_type () == "text"){
             $content = trim ( $request ['Content'] );
+//            if($date_user->get_step($from) == 1) {
+//                $step = 2;
+//                $date_user->update_step($from, $step);
+//                $content = "请正确输入您的微信号或手机号\n";
+//                return $content;
+//            }
+//            if($date_user->get_step($from) == 2) {
+//                $date_user->update_wechat_id($from, $content);
+//                $step = 3;
+//                $date_user->update_step($from, $step);
+//                $content = "现在请输入你的性别(男或女)";
+//                return $content;
+//            }
+//
             if($date_user->get_step($from) == 1) {
-                $step = 2;
-                $date_user->update_step($from, $step);
-                $content = "请正确输入您的微信号或手机号\n";
-                return $content;
-            }
-            if($date_user->get_step($from) == 2) {
-                $date_user->update_wechat_id($from, $content);
-                $step = 3;
-                $date_user->update_step($from, $step);
-                $content = "现在请输入你的性别(男或女)";
-                return $content;
-            }
-
-            if($date_user->get_step($from) == 3) {
-                if (strstr ( $content, '女' ) || strstr ( $content, '0' )) {
+                if (strstr ( $content, '女' )) {
                     $sex = 0;
-                }else
+                }else if (strstr ( $content, '男' )) {
                     $sex = 1;
+                }else {
+                    $content = "请输入正确的信息： 男或女";
+                    return $content;
+                }
+
                 $start_time = time();
                 $step = 4;
                 $date_user->update_step($from, $step);
