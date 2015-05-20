@@ -165,7 +165,7 @@ eot;
                     $date_user->register($from);
                     $date_user->update_step($from, $step);
                 }
-                return $date_ret
+                return $date_ret;
             }elseif ($w->get_event_type () == "unsubscribe") {
                 $unsubscribe = "真的要取消关注了吗？我们会做的更好的";
                 return $unsubscribe;
@@ -179,8 +179,8 @@ eot;
                         $Id = $date_user->get_Id($from);
                         $qbt = $date_user->get_qbt($from);
                         $invitation_code = $date_user->get_invitation_code($from);
-                        date_ret = "你的丘比特之箭的数量是".$qbt."\n个人专属码是".$invitation_code.",当好友用你的专属码注册，两人皆可以获得一支丘比特之箭，可以使用该道具来续聊和免排队哦\n";
-                        return date_ret;
+                        $date_re, = "你的丘比特之箭的数量是".$qbt."\n个人专属码是".$invitation_code.",当好友用你的专属码注册，两人皆可以获得一支丘比特之箭，可以使用该道具来续聊和免排队哦\n";
+                        return $date_ret;
                 case 'date':
                     if(!$date_user->is_register($from)) {
                         $step = 1;
