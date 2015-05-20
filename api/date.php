@@ -31,8 +31,10 @@ class eight_min_date{
         $real_first_talk_times = 9;
         $left_talk_times = 10;
         $waiting_people = 99;
+        $invitation_code = -1;
+        $reward = 0;
         $waiting_start_time=$record_waiting_start_time_flag=$transfer=0;
-        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer')";
+        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer', '$invitation_code', '$reward')";
         mysql_query($sql);
     }
 

@@ -281,9 +281,11 @@ eot;
                 $start_time = time();
                 $step = 4;
                 $date_user->update_step($from, $step);
-                $want_to_talk = 1;
+//                $want_to_talk = 1;
+                $want_to_talk = 0;
                 $date_user->update_all($from, $sex, $start_time, $want_to_talk);
-                $content = $date_user->find_target_to_talk($from);
+//                $content = $date_user->find_target_to_talk($from);
+                $content = "恭喜，已经完成注册.\n1.如有邀请码，请现在输入邀请码获得神秘礼物\n2.请直接点击左下角进行聊天\n";
                 return $content;
             }
 
