@@ -24,10 +24,23 @@ $hehe= unicode2utf8("\ue02d");
 $data='{
     "button": [
         
-        {    
+        
+        {
+            "name": "点我开始", 
+            "sub_button": [
+                {    
           "type":"click",
           "name":"点我开始",
           "key":"date"
+        },
+                
+                {
+                    "type":"click",
+                   "name":"找回Ta续聊",
+                    "key": "xuliao"
+                }
+                
+            ]
         },
         {
             "name": "丘比特之箭", 
