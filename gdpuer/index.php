@@ -221,7 +221,9 @@ eot;
                         $date_ret = "请先输入男或女来完成注册\n";
                         return $date_ret;
                     }
-                   $date_user->update_step($open_id, 11);
+                    if($date_user->is_talking($open_id))
+                        return "你已经在聊天了喔";
+                    $date_user->update_step($open_id, 11);
                     $qbt = $date_user->get_qbt($open_id);
                     $next = "请输入对方的Id号，使用丘比特之箭找回ta\n你的丘比特之箭还剩下".$qbt."支\n 输入0结束续聊过程";
                     return $next;
