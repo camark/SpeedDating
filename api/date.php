@@ -250,10 +250,15 @@ class eight_min_date{
 
     public function find_target($open_id){
         $sex = self::get_sex($open_id);
-        if($sex == 1)
+        if($sex == 1) {
+            $target = "美女";
+            $myself = "帅哥";
             $target_sex = 0;
-        else
+        }elseif($sex == 0){
+            $target = "帅哥";
+            $myself = "美女";
             $target_sex = 1;
+        }
         $sql = "SELECT * FROM `gdpu_date`  WHERE `sex` = '$target_sex' AND `want_to_talk` = 1 ";
         $result = mysql_query($sql);
         $array = mysql_fetch_array($result);
@@ -276,7 +281,7 @@ class eight_min_date{
             mysql_query($sql);
 
             $talking_id = $array['Id'];
-            $msg = "已经成功匹配了,你在跟代号为".$talking_id."的人聊天\n发图片和语音聊天更有趣喔\n";
+            $msg = "匹配成功,你约到了代号为".$talking_id."的".$target."聊天\n发图片和语音聊天更有趣喔\n";
             $type = 'text';
             $video_id = 0;
             self::sendmsg($open_id, $msg, $type, $video_id);
@@ -285,7 +290,7 @@ class eight_min_date{
             $result = mysql_query($sql);
             $array = mysql_fetch_array($result);
             $talking_id = $array['Id'];
-            $msg = "已经成功匹配了,你在跟代号为".$talking_id."的人聊天\n发图片和语音聊天更有趣喔\n";
+            $msg = "匹配成功,你约到了代号为".$talking_id."的".$myself."聊天\n发图片和语音聊天更有趣喔\n";
             self::sendmsg($target_id, $msg, $type, $video_id);
 
             $add = 2;//only excute once

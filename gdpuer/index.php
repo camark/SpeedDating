@@ -158,9 +158,9 @@ eot;
         else if ($w->get_msg_type () == "event") {
             if ($w->get_event_type () == "subscribe") {
                 if($date_user->is_register($from)) {
-                    $date_ret = "你已经完成注册了，请点击按钮继续使用\n";
+                    $date_ret = "你已经完成注册了，请点击左下角按钮继续使用\n";
                 }else {
-                    $date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，电子邮箱地址;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n请输入性别： 男或女";
+                    $date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：\n1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，微信号;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n请输入性别： 男或女";
                     $step = 1;
                     $date_user->register($from);
                     $date_user->update_step($from, $step);
@@ -292,7 +292,7 @@ eot;
                 $want_to_talk = 0;
                 $date_user->update_all($from, $sex, $start_time, $want_to_talk);
                 //                $content = $date_user->find_target_to_talk($from);
-                $content = "恭喜，已经完成注册.\n1.如有邀请码，请现在输入邀请码获得神秘礼物\n2.请直接点击左下角进行聊天\n";
+                $content = "恭喜，已经完成注册.\n1.如有邀请码，请现在输入邀请码获得神秘礼物\n2.请直接点击左下角按钮进行聊天\n";
                 return $content;
             }
 
