@@ -100,6 +100,19 @@ class eight_min_date{
         return $qbt;
     }
 
+    public function get_description($sex){
+        $max = 9;
+        $boy = 1;
+        if($sex == $boy)
+            $description  = array("阳光少年","帅气大叔","可爱的小屌丝", "呆萌的程序猿", "死理性派", "高富帅", "肌肉男", "死宅",/*8*/
+        "小正太");
+        else
+            $description = array("可爱萝莉","成熟御姐","清纯少女"    , "电波少女"    , "天然呆"  , "学姐"  , "大学霸", "白富美",/*8*/
+        "学妹");
+        $num = rand(0, $max);
+        return $description[$num];
+    }
+
     public function get_invitation_code($open_id){
         $sql = "SELECT `invitation_code` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
         $result = mysql_query($sql);
@@ -299,14 +312,16 @@ class eight_min_date{
 
     public function find_target($open_id){
         $sex = self::get_sex($open_id);
-        if($sex == 1) {
-            $target = "美女";
-            $myself = "帅哥";
-            $target_sex = 0;
-        }elseif($sex == 0){
-            $target = "帅哥";
-            $myself = "美女";
-            $target_sex = 1;
+        $boy = 1;
+        $girl = 0;
+        if($sex == $boy) {
+            $target = self::get_description($girl);
+            $myself = self::get_description($boy);
+            $target_sex = $girl;
+        }elseif($sex == $girl){
+            $target = self::get_description($boy);
+            $myself = self::get_description($girl);
+            $target_sex = $boy;
         }
         $sql = "SELECT * FROM `gdpu_date`  WHERE `sex` = '$target_sex' AND `want_to_talk` = 1 ";
         $result = mysql_query($sql);
