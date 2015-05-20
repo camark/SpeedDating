@@ -397,14 +397,20 @@ class eight_min_date{
         mysql_query($sql);
     }
 
-    public function continue_talking($open_id, $target_id) {
+    public function check_continue_status($open_id, $target_id) {
+        if(self::is_talking($open_id))
+            return "你已经在聊天了喔";
         if(self::is_talking($target_id))
             return "很遗憾，你想联系的那个ta已经在聊天了喔\n或者尝试等8分钟,再用丘比特之箭射一下？";
         if(self::get_want_to_talk($target_id))
             return "很遗憾，你想联系的那个ta已经在匹配中了喔\n或者尝试等8分钟,再找回她？看看有没有缘分咯";
         if(self::get_want_to_talk($open_id))
             return "你已经在匹配中了喔,找不回他/她了";
-        $qbt = self::get_qbt($open_id);
+        return "success";
+    }
+
+    public function continue_talking($open_id, $target_id) {
+       $qbt = self::get_qbt($open_id);
         if($qbt > 0) {
             $start_time = time();
             $sql = "UPDATE `gdpu_date` SET `start_time` = '$start_time' WHERE `open_id` = '$open_id' ";
