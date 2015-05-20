@@ -222,7 +222,7 @@ class eight_min_date{
         $result = mysql_query($sql);
         $array = mysql_fetch_array($result);
         $num_of_meetings = $array['num_of_meetings'];
-        $max_meetings = 50;
+        $max_meetings = 2000;
         if($num_of_meetings > $max_meetings)
             return 1;
         else
@@ -318,7 +318,7 @@ class eight_min_date{
             $target = self::get_description($girl);
             $myself = self::get_description($boy);
             $target_sex = $girl;
-        }elseif($sex == $girl){
+        }elseif($sex == $girl) {
             $target = self::get_description($boy);
             $myself = self::get_description($girl);
             $target_sex = $boy;
@@ -422,9 +422,9 @@ class eight_min_date{
         $current_time = time();
         $time_gap = $current_time - $start_time;
         $min = date('i', $time_gap);
-        if($min > 8)
+        if($min > 8) {
             $content = self::stop_talking($open_id);
-        else {
+        }else {
             $min = 8 - $min;
             if(self::get_step($open_id)==5 && $min==0) {
                 $min = date('s', $time_gap);
