@@ -84,6 +84,14 @@ class eight_min_date{
         return $waiting_people ;
     }
 
+    public function get_info_by_Id($Id){
+        $sql = "SELECT `open_id` FROM `gdpu_date` WHERE `Id` = '$Id' ";
+        $result = mysql_query($sql);
+        $array = mysql_fetch_array($result);
+        $Id = $array['Id'];
+        return $Id;
+    }
+
     public function get_Id($open_id){
         $sql = "SELECT `Id` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
         $result = mysql_query($sql);
