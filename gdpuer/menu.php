@@ -29,11 +29,24 @@ $data='{
           "name":"点我开始",
           "key":"date"
         },
-        {    
+        {
+            "name": "丘比特之箭", 
+            "sub_button": [
+                {    
                "type":"view",
                "name":"详情介绍",
                "url":"http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd"
             },
+                
+                {
+                    "type":"click",
+                   "name":"丘比特之箭",
+                    "key": "qbt"
+                }
+                
+            ]
+        },
+        
             
         {
             "name": "反馈入口", 
