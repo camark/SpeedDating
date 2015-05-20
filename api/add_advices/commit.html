@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-Ua-Compatible" content="IE=EmulateIE7" />
+<meta name="keywords" content="给小小8提意见" />
+<meta name="description" content="欢迎给小小8提意见" /
+<meta name="language" content="zh" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+<title>给小小8提意见</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<style>
+.ui-header .ui-title, .ui-footer .ui-title 
+{
+overflow:visible; 
+}
+.ui-btn-up-f
+{
+ overflow:visible; 
+ border-radius:0em;
+ margin-top:0.1em;
+ margin-bottom:0;
+ border:0.1em solid #555555;
+} 
+</style>
+</head>
+<body>
+<div data-role="page"> 
+  <div data-role="header" data-theme="e">
+      <h1 style= "font-size:1.2em;color:red;margin-bottom:0.4em;margin-top:1.7em;">给小小8提意见</h1>
+	<p style = "text-align:center;margin-top:0.4em;font-weight:normal;"><font face="宋体">(八分钟约会良好的聊天环境离不开你的建议哦)</font> </p>
+  </div>                               
+  <div data-role="content" data-theme="e">
+     <div data-role="fieldcontain" data-theme="e">                      
+<form id="fb_form">
+   <table>
+      <tr>
+       <td class="theader">您的昵称是  ： </td>
+       <td><input name="yourname" id="yourname" value="" class="normalInput input_w"></td><td></td>
+     </tr> 
+     </tr>  	 
+	 </table>
+	   <label for="fname">写下你宝贵建议吧:</label>
+      <input type="text" name="advice" id="advice">
+     </form>  </div>
+ 
+<p style = "text-align:center;">
+<input class="lc_middle_input" type="button" id="fb_calc_btn" value="提交" data-inline="true" data-icon="star"> 
+ <input  class="ls_set_input" id="fb_calc_cbtn" type="button" onclick="reset()" value="重置"  data-inline="true" data-icon="refresh">   </p>
+  
+   <div data-role="footer"  data-theme="b" >
+     <p id = "infos" style=" font-size:1em; font-weight:normal; text-align:justify;text-justify:inter-ideograph;margin-top:0.5em;margin-bottom:0em;  "></p>
+	 <p id = "result_temp"  style="text-align:center;font-weight:normal;font-size:1.2em;"> <img src="result.gif" width="35em" height="35em" style="position:relative; top:0.2em;"> 谢谢你的意见，我们会参考并改进小小8~</br></p> 
+   </div>   <p style="margin-top:0.8em;margin-bottom:0em;"></p> 
+
+   <div data-role="footer"  data-theme="c" > 
+ <p style = "margin-bottom:0em;color:red;">&nbsp备注:</p>
+ <p style = "margin-top:0.6em;margin-bottom:0em;font-weight:normal;font-size:0.9em;line-height:1.25em;" ><font face="宋体">&nbsp 1. 注意信息无误。请勿恶意灌水，否则小小8会拉黑你，你将用不到小小8功能。
+ <p style="margin-top:0.3em;margin-bottom:0em;"></p>
+ <p style="margin-top:0.6em;margin-bottom:0em;font-weight:normal;font-size:0.9em;line-height:1.25em;"> &nbsp 2. power by YongHao Hu</font></p> <p style="margin-top:0.5em;margin-bottom:0em;"></p> </div>
+ 
+ <script type="text/javascript">
+ $('#fb_calc_cbtn').click(function(){
+   document.getElementById("fb_form").reset();
+ });
+
+$('#fb_calc_btn').click(function(){
+	function isNull(){
+    var flag=true;
+    if($('#yourname').val() == '') flag = false;
+    if($('#dorm').val() == '') flag = false;
+    if($('#phone').val() == '') flag = false;
+	if($('#advice').val() == '') flag = false;
+     return flag;
+}
+    if(!isNull()){
+        alert('请将数据填写完整');
+        return false;
+    }
+
+function httpGet(theUrl)
+{ 
+    var xmlHttp = null;
+	if (window.XMLHttpRequest)
+	{// code for all new browsers
+		  xmlHttp=new XMLHttpRequest();
+		  alert("1");
+	}
+	else if (window.ActiveXObject)
+	{// code for IE5 and IE6
+		  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP"); alert("2");
+	}
+	if (xmlHttp!=null)
+	{
+		  xmlHttp.open( "POST", theUrl, false );
+		  xmlHttp.send(); alert("3");
+	}
+	else
+			 alert("Your browser does not support XMLHTTP.");
+}
+	var name = $('#yourname').val();
+	var dorm = 111;
+	var phone = 222;
+	var advice = $('#advice').val();
+	var url = "http://av.jejeso.com/helper/api/add_advices/add_advice.php?name="+name+"&dorm="+dorm+"&phone="+phone+"&advice="+advice;
+	$("#fb_calc_btn").prev('span').find('span.ui-btn-text').text("已提交");
+	$(this).addClass('ui-disabled');
+//	httpGet(url);
+$.post("http://av.jejeso.com/helper/api/add_advices/add_advice.php", { name: name, dorm: dorm, phone: phone, advice: advice,  } );
+	var output = "你的建议已经成功提交，Ourstudio和小小8的成长离不开你：）";
+	var x=document.getElementById("infos"); 
+	x.innerHTML = output ;  
+	x=document.getElementById("result_temp");
+	x.innerHTML="";
+});
+ 
+</script>     
+
+</body>
+</html>
