@@ -221,15 +221,9 @@ eot;
                         $date_ret = "请先输入男或女来完成注册\n";
                         return $date_ret;
                     }
-                    $ret = $date_user->check_continue_status($open_id, $target_id);
-                    if($ret != "success") {
-                        return $ret;
-                    }
-
-                    $date_user->update_step($open_id, 11);
+                   $date_user->update_step($open_id, 11);
                     $qbt = $date_user->get_qbt($open_id);
-                    $next = "请输入对方的Id号，使用丘比特之箭找回ta\n你的丘比特之箭还剩下".$qbt."支\n
-                        输入0结束续聊过程";
+                    $next = "请输入对方的Id号，使用丘比特之箭找回ta\n你的丘比特之箭还剩下".$qbt."支\n 输入0结束续聊过程";
                     return $next;
                     break;
 
@@ -352,6 +346,10 @@ eot;
             $step = 4;
             $date_user->update_step($open_id, $step);
             $target_id = $content;
+            $ret = $date_user->check_continue_status($open_id, $target_id);
+            if($ret != "success") {
+                return $ret;
+            }
             if($date_user->get_info_by_Id($target_id) > 0) {
                 $reply_content = $date_user->continue_talking($open_id, $target_id);
             }else {
