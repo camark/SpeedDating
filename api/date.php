@@ -84,6 +84,30 @@ class eight_min_date{
         return $waiting_people ;
     }
 
+    public function get_Id($open_id){
+        $sql = "SELECT `Id` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
+        $result = mysql_query($sql);
+        $array = mysql_fetch_array($result);
+        $Id = $array['Id'];
+        return $Id;
+    }
+
+    public function get_qbt($open_id){
+        $sql = "SELECT `qbt` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
+        $result = mysql_query($sql);
+        $array = mysql_fetch_array($result);
+        $qbt = $array['qbt'];
+        return $qbt;
+    }
+
+    public function get_invitation_code($open_id){
+        $sql = "SELECT `invitation_code` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
+        $result = mysql_query($sql);
+        $array = mysql_fetch_array($result);
+        $invitation_code = $array['invitation_code'];
+        return $invitation_code;
+    }
+
     public function get_gdpu_talk_times($open_id){
         $sql = "SELECT `gdpu_talk_times` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
         $result = mysql_query($sql);
@@ -91,6 +115,7 @@ class eight_min_date{
         $gdpu_talk_times = $array['gdpu_talk_times'];
         return $gdpu_talk_times ;
     }
+
 
     public function get_real_first_talk_times($open_id){
         $sql = "SELECT `real_first_talk_times` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
