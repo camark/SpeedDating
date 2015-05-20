@@ -85,7 +85,7 @@ class eight_min_date{
     }
 
     public function get_info_by_Id($Id){
-        $sql = "SELECT `open_id` FROM `gdpu_date` WHERE `Id` = '$Id' ";
+        $sql = "SELECT `Id` FROM `gdpu_date` WHERE `Id` = '$Id' ";
         $result = mysql_query($sql);
         $array = mysql_fetch_array($result);
         $Id = $array['Id'];
