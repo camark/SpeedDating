@@ -204,13 +204,13 @@ eot;
                     return $date_ret;
                     break;
                 case 'chat':
-                    $about = "合作联系微信号 jiamingpeng1994 或 Hyhhhha";
+                    $about = "建议or合作 请发至反馈邮箱 \n（点击发送邮件）用户建议戳这 eight_mins@126.com \n联系微信号 jiamingpeng1994 或 Hyhhhha";
                     return $about;
                     break;
-                case 'jianshe':
-                    $holiday = "八分钟约会即将上线，惊喜多多";
-                    return $holiday;
-                    break;
+                 case 'jubao':
+                    $about = "如有不和谐行为，请将对方编号及截图 请发至举报邮箱 \n（点击发送邮件）eight_mins_110@126.com  \n您的支持就是我们的动力";
+                    return $about;
+                    break;   
 
                 default:
                     # code...
