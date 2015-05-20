@@ -136,6 +136,12 @@ class eight_min_date{
         mysql_query($sql);
     }
 
+    public function minus_qbt($open_id)
+    {
+        $sql = "UPDATE `gdpu_date` SET `qbt` = `qbt`-1 WHERE `open_id` = '$open_id' ";
+        mysql_query($sql);
+    }
+
     public function plus_twos_qbt($open_id, $invitation_code)
     {
         $sql = "UPDATE `gdpu_date` SET `qbt` = `qbt`+1 WHERE `open_id` = '$open_id' ";
@@ -279,6 +285,16 @@ class eight_min_date{
         return $target_id ;
     }
 
+    public function get_want_to_talk($open_id){
+        $sql = "SELECT `want_to_talk` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
+        $result = mysql_query($sql);
+        $array = mysql_fetch_array($result);
+        $want_to_talk = $array['want_to_talk'];
+        return $want_to_talk ;
+    }
+
+
+
     public function get_time($open_id){
         $sql = "SELECT `start_time` FROM `gdpu_date`  WHERE `open_id` = '$open_id' ";
         $result = mysql_query($sql);
@@ -368,6 +384,35 @@ class eight_min_date{
         return $target_id;
     }
 
+    public function update_is_talking($open_id, $flag) {
+        $sql = "UPDATE `gdpu_date` SET `is_talking` = '$flag' WHERE `open_id` = '$open_id' ";
+        mysql_query($sql);
+    }
+
+    public function continue_talking($open_id, $target_id) {
+        $target_id = self::get_target($open_id);
+        if(self::is_talking($target_id))
+            return "很遗憾，你想联系的那个ta已经在聊天了喔\n或者尝试等8分钟,再用丘比特之箭射一下？";
+        if(self::get_want_to_talk($target_id))
+            return "很遗憾，你想联系的那个ta已经在匹配中了喔\n或者尝试等8分钟,再找回她？看看有没有缘分咯";
+        if(self::get_want_to_talk($open_id))
+            return "你已经在匹配中了喔,找不回他/她了";
+        $qbt = self::get_qbt($open_id);
+        if($qbt > 0) {
+            $start_time = time();
+            $sql = "UPDATE `gdpu_date` SET `start_time` = '$start_time' WHERE `open_id` = '$open_id' ";
+            $sql = "UPDATE `gdpu_date` SET `start_time` = '$start_time' WHERE `open_id` = '$target_id' ";
+            self::update_is_talking($open_id, 1);
+            self::update_is_talking($target_id, 1);
+            $msg = "你的那个ta用丘比特之箭射中你了喔\n爱神之箭珍贵，且聊且珍惜";
+            self::sendmsg($target_id, $msg, 'text', NULL);
+            self::minus_qbt($open_id);
+            return "你的丘比特之箭已射出，成功找回了ta,你的丘比特之箭只剩下".$qbt."支";
+        }else {
+            return "你的丘比特之箭已经用光咯，请发专属码邀请其他人获取丘比特之箭:P";
+        }
+    }
+
     public function stop_talking($open_id){
         $step = 4;
         self::update_step($open_id, $step);
@@ -395,7 +440,8 @@ class eight_min_date{
         if(self::get_real_first_talk_times($open_id) > 0)
             self::update_real_first_talk_times($open_id);
 
-        $content = "sorry,时间已到，如果想继续聊～请记住对方的编号id:".$talking_id."哦～\n 曾有一个人,缘分让她来到了我的世界，8分钟，让我想进一步了解这个人，小助手，你能帮我联系他吗？";
+        $content = "sorry,时间已到，如果想继续聊～请记住对方的编号id:".$talking_id."哦～\n 曾有一个人,缘分让她来到了我的世界，8分钟，让我想进一步了解这个人，小助手，你能帮我用丘比特之箭去射(联系)他吗？\n
+            回复”续聊“，使用丘比特之箭再续前缘";
         return $content;
     }
 
