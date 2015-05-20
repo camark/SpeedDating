@@ -34,19 +34,20 @@ $data='{
                "name":"详情介绍",
                "url":"http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd"
             },
+            
         {
-            "name": "more", 
+            "name": "反馈入口", 
             "sub_button": [
                 
                 
                 {
                     "type": "click", 
-                    "name": "more", 
-                    "key": "jianshe"
+                    "name": "举报入口", 
+                    "key": "jubao"
                 },
                 {
-                    "type": "click", 
-                    "name": "合作联系", 
+                    "type":"click",
+                   "name":"建议及合作",
                     "key": "chat"
                 }
             
