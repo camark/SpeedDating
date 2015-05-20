@@ -179,7 +179,7 @@ eot;
                         $Id = $date_user->get_Id($from);
                         $qbt = $date_user->get_qbt($from);
                         $invitation_code = $date_user->get_invitation_code($from);
-                        $date_ret = "你的丘比特之箭的数量是".$qbt."\n个人专属码是".$Id.".\n当好友关注后输入你的专属码注册，两人皆可以获得一支丘比特之箭，\n可以使用该道具来续聊和免排队哦";
+                        $date_ret = "你的丘比特之箭的数量是".$qbt."\n个人专属码(Id)是".$Id."\n当好友关注后输入你的专属码注册，两人皆可以获得一支丘比特之箭，\n可以使用该道具来续聊和免排队哦";
                         return $date_ret;
                         break;
                 case 'date':
@@ -319,8 +319,24 @@ eot;
                 return $content;
             }
         }
-        $reply_content = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
-        $reply_content = self::replypic($reply_content);
+        if(preg_match('^[0-9]*$',$content)) {
+            if($date_user->get_invitation_code($content) == -1) {
+                if($date_user->check_invitation_code($content)) {
+                    $date_user->plus_twos_qbt($from, $content);
+                    $reply_content = "恭喜邀请码使用成功，你跟邀请者皆获得丘比特之箭一支，可以使用它来续聊和免排队\n";
+                    $date_user->update_invitation_status($from, $content);
+                }else {
+                    $reply_content = "输入邀请码错误\n";
+                }
+                return $reply_content;
+            }else {
+                $reply_content = "你已经输入过邀请码了\n但你可以让其他人输入你的专属码来获得道具——丘比特之箭";
+                return $reply_content;
+            }
+        }else {
+            $reply_content = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
+            $reply_content = self::replypic($reply_content);
+        }
 
         return $reply_content;
     }

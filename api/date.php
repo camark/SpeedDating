@@ -108,6 +108,30 @@ class eight_min_date{
         return $invitation_code;
     }
 
+    public function check_invitation_code($invitation_code){
+        $sql = "SELECT `open_id` FROM `gdpu_date` WHERE `Id` = '$invitation_code' ";
+        $result=mysql_query($sql);
+        if(mysql_num_rows($result))
+            $res = 1;
+        else 
+            $res = 0;
+        return $res;
+    }
+
+    public function update_invitation_status($open_id, $invitation_code){
+        $sql = "UPDATE `gdpu_date` SET `invitation_code` = '$invitation_code' WHERE `open_id` = '$open_id' ";
+        mysql_query($sql);
+    }
+
+    public function plus_twos_qbt($open_id, $invitation_code)
+    {
+        $sql = "UPDATE `gdpu_date` SET `qbt` = `qbt`+1 WHERE `open_id` = '$open_id' ";
+        mysql_query($sql);
+
+        $sql = "UPDATE `gdpu_date` SET `qbt` = `qbt`+1 WHERE `Id` = '$invitation_code' ";
+        mysql_query($sql);
+    }
+
     public function get_gdpu_talk_times($open_id){
         $sql = "SELECT `gdpu_talk_times` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
         $result = mysql_query($sql);
