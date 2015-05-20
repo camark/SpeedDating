@@ -109,14 +109,14 @@ class eight_min_date{
     }
 
     public function get_description($sex){
-        $max = 9;
+        $max = 12;
         $boy = 1;
         if($sex == $boy)
-            $description  = array("阳光少年","帅气大叔","可爱的小屌丝", "呆萌的程序猿", "死理性派", "高富帅", "肌肉男", "死宅",/*8*/
-        "小正太");
+            $description  = array("阳光少年","帅气大叔","可爱的小屌丝", "呆萌的大白", "死理性派", "高富帅", "肌肉男", "死宅",/*8*/
+        "小正太", "暖男哥哥", "cool guy", "闷骚");
         else
             $description = array("可爱萝莉","成熟御姐","清纯少女"    , "电波少女"    , "天然呆"  , "学姐"  , "大学霸", "白富美",/*8*/
-        "学妹");
+        "学妹"  , "知心姐姐", "知性女生", "花样少女");
         $num = rand(0, $max);
         return $description[$num];
     }
