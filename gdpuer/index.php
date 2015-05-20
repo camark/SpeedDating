@@ -285,6 +285,8 @@ eot;
             if($date_user->is_talking($from)) {
                 if($content == "结束") {
                     $date_user->stop_talking($from);
+                    $target = $date_user->get_target($from);
+                    $date_user->stop_talking($target);
                     $content = "你的聊天已结束，请继续享用我们的8分钟约会：P\n";
                 }else {
                     $target = $date_user->get_target($from);
