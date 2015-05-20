@@ -295,8 +295,8 @@ eot;
                     $type = "text";
                     $date_user->sendmsg($target, $content, $type, NULL);
                     $content = $date_user->caculate_left_time($from);
-                    return $content;
                 }
+                return $content;
             }
         }
         $reply_content = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
