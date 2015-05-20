@@ -401,7 +401,7 @@ class eight_min_date{
     }
 
     public function update_is_talking($open_id, $flag) {
-        $sql = "UPDATE `gdpu_date` SET `is_talking` = '$flag' WHERE `open_id` = '$open_id' ";
+        $sql = "UPDATE `gdpu_date` SET `talking` = '$flag' WHERE `open_id` = '$open_id' ";
         mysql_query($sql);
     }
 
@@ -422,12 +422,16 @@ class eight_min_date{
         if($qbt > 0) {
             $start_time = time();
             $sql = "UPDATE `gdpu_date` SET `start_time` = '$start_time' WHERE `open_id` = '$open_id' ";
+            mysql_query($sql);
             $sql = "UPDATE `gdpu_date` SET `start_time` = '$start_time' WHERE `open_id` = '$target_id' ";
+            mysql_query($sql);
+
             self::update_is_talking($open_id, 1);
             self::update_is_talking($target_id, 1);
             $msg = "你的那个ta用丘比特之箭射中你了喔\n爱神之箭珍贵，且聊且珍惜";
             self::sendmsg($target_id, $msg, 'text', NULL);
             self::minus_qbt($open_id);
+            $qbt -= 1;
             return "你的丘比特之箭已射出，成功找回了ta,你的丘比特之箭只剩下".$qbt."支";
         }else {
             return "你的丘比特之箭已经用光咯，请发专属码邀请其他人获取丘比特之箭:P";
