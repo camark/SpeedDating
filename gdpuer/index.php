@@ -319,19 +319,18 @@ eot;
                 return $content;
             }
         }
+        return preg_match('^[0-9]*$',$content);
         if(preg_match('^[0-9]*$',$content)) {
             if($date_user->get_invitation_code($content) == -1) {
                 if($date_user->check_invitation_code($content)) {
                     $date_user->plus_twos_qbt($from, $content);
-                    $reply_content = "恭喜邀请码使用成功，你跟邀请者皆获得丘比特之箭一支，可以使用它来续聊和免排队\n";
                     $date_user->update_invitation_status($from, $content);
+                    $reply_content = "恭喜邀请码使用成功，你跟邀请者皆获得丘比特之箭一支，可以使用它来续聊和免排队\n";
                 }else {
                     $reply_content = "输入邀请码错误\n";
                 }
-                return $reply_content;
             }else {
                 $reply_content = "你已经输入过邀请码了\n但你可以让其他人输入你的专属码来获得道具——丘比特之箭";
-                return $reply_content;
             }
         }else {
             $reply_content = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
