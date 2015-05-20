@@ -39,7 +39,11 @@ $data='{
             "name": "反馈入口", 
             "sub_button": [
                 
-                
+                {
+                    "type": "view", 
+                    "name": "建议入口", 
+                    "url": "http://av.jejeso.com/Ours/eightmins/api/add_advices/commit.html"
+                },
                 {
                     "type": "click", 
                     "name": "举报入口", 
@@ -47,10 +51,10 @@ $data='{
                 },
                 {
                     "type":"click",
-                   "name":"建议及合作",
+                   "name":"合作联系",
                     "key": "chat"
                 }
-            
+                
             ]
         }
     ]

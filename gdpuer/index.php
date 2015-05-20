@@ -211,6 +211,7 @@ eot;
                     $about = "如有不和谐行为，请将对方编号及截图 请发至举报邮箱 \n（点击发送邮件）eight_mins_110@126.com  \n您的支持就是我们的动力";
                     return $about;
                     break;   
+                
 
                 default:
                     # code...
