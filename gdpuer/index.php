@@ -217,7 +217,7 @@ eot;
                     return $date_ret;
                     break;
                 case 'chat':
-                    $about = "建议or合作 请发至反馈邮箱 \n（点击发送邮件）用户建议戳这 eight_mins@126.com \n联系微信号 jiamingpeng1994 或 Hyhhhha";
+                    $about = "建议or合作 请发至反馈邮箱 \n（点击发送邮件）用户建议戳这 eight_mins@126.com \n联系微信号 jiamingpeng1994 或 QQ: 645310824";
                     return $about;
                     break;
                 case 'jubao':

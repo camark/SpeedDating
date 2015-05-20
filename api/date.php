@@ -398,6 +398,7 @@ class eight_min_date{
         $content = "sorry,时间已到，如果想继续聊～请记住对方的编号id:".$talking_id."哦～\n 曾有一个人,缘分让她来到了我的世界，8分钟，让我想进一步了解这个人，小助手，你能帮我联系他吗？";
         return $content;
     }
+
     public function update_wechat_id($open_id, $content){
         $sql = "UPDATE `gdpu_date` SET `wechat_id` = '$content' WHERE `open_id` = '$open_id' ";
         mysql_query($sql);
