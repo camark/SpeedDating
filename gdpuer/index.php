@@ -179,7 +179,7 @@ eot;
                         $Id = $date_user->get_Id($from);
                         $qbt = $date_user->get_qbt($from);
                         $invitation_code = $date_user->get_invitation_code($from);
-                        $date_ret = "你的丘比特之箭的数量是".$qbt."\n个人专属码是".$invitation_code.",当好友用你的专属码注册，两人皆可以获得一支丘比特之箭，可以使用该道具来续聊和免排队哦\n";
+                        $date_ret = "你的丘比特之箭的数量是".$qbt."\n个人专属码是".$Id.".\n当好友关注后输入你的专属码注册，两人皆可以获得一支丘比特之箭，\n可以使用该道具来续聊和免排队哦";
                         return $date_ret;
                         break;
                 case 'date':
