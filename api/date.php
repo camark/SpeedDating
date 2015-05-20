@@ -431,7 +431,8 @@ class eight_min_date{
             self::update_target_id($open_id, $target_id);
             self::update_target_id($target_id, $open_id);
 
-            $msg = "你的那个ta用丘比特之箭射中你了喔\n爱神之箭珍贵，且聊且珍惜";
+            $Id = self::get_Id_by_open_id($open_id);
+            $msg = "你的那个ta: ID".$Id."用丘比特之箭射中你了喔\n爱神之箭珍贵，且聊且珍惜";
             self::sendmsg($target_id, $msg, 'text', NULL);
             self::minus_qbt($open_id);
             $qbt -= 1;
