@@ -319,7 +319,7 @@ eot;
                 return $content;
             }
         }
-        return preg_match('^[0-9]*$',$content);
+        return preg_match('/^[0-9]*$/',$content);
         if(preg_match('^[0-9]*$',$content)) {
             if($date_user->get_invitation_code($content) == -1) {
                 if($date_user->check_invitation_code($content)) {
