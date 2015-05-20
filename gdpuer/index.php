@@ -222,7 +222,7 @@ eot;
                         return $date_ret;
                     }
                     $date_user->update_step($open_id, 11);
-                    $qbt = self::get_qbt($open_id);
+                    $qbt = $date_user->get_qbt($open_id);
                     $next = "请输入对方的Id号，使用丘比特之箭找回ta\n你的丘比特之箭还剩下".$qbt."支\n
                         输入0结束续聊过程";
                     return $next;
@@ -345,7 +345,7 @@ eot;
             }
         }else if($date_user->get_step($open_id) == 11) {
             $step = 4;
-            self::update_step($open_id, $step);
+            $date_user->update_step($open_id, $step);
             $target_id = $content;
             if($date_user->get_Id($target_id) > 0) {
                 $reply_content = $date_user->continue_talking($open_id, $target_id);
