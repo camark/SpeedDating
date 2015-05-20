@@ -351,7 +351,7 @@ eot;
             if($ret != "success") {
                 return $ret;
             }
-            if($date_user->get_info_by_Id($target_id) > 0) {
+            if($date_user->get_info_by_Id($Id) > 0) {
                 $reply_content = $date_user->continue_talking($open_id, $target_id);
             }else {
                 return "不存在此Id编号";
