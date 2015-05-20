@@ -319,8 +319,8 @@ class eight_min_date{
         self::update_meetings($add);
         $flag = 0;
         self::update_record_waiting_start_time_flag($open_id, $flag);
-        if(self::get_gdpu_talk_times($open_id) > 0)
-            self::update_gdpu_talk_times($open_id);
+//        if(self::get_gdpu_talk_times($open_id) > 0)
+//            self::update_gdpu_talk_times($open_id);
         if(self::get_real_first_talk_times($open_id) > 0)
             self::update_real_first_talk_times($open_id);
 

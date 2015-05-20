@@ -157,10 +157,16 @@ eot;
         }   // 返回图片地址
         else if ($w->get_msg_type () == "event") {
             if ($w->get_event_type () == "subscribe") {
-                $welcome = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
-                $welcome = self::replypic($welcome);
-                return $welcome;
-            } elseif ($w->get_event_type () == "unsubscribe") {
+                if($date_user->is_register($from)) {
+                    $date_ret = "你已经完成注册了，请点击按钮继续使用\n";
+                }else {
+                    $date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，电子邮箱地址;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n请输入性别： 男或女";
+                    $step = 1;
+                    $date_user->register($from);
+                    $date_user->update_step($from, $step);
+                }
+                return $date_ret;
+            }elseif ($w->get_event_type () == "unsubscribe") {
                 $unsubscribe = "真的要取消关注了吗？我们会做的更好的";
                 return $unsubscribe;
             }
@@ -170,11 +176,10 @@ eot;
                 $menukey = $w->get_event_key ();
                 switch ($menukey) {
                 case 'date':
-                    if($date_user->is_register($from)) {
                         if($date_user->is_talking($from)) {
                             $date_ret = "你已经在聊天了喔\n";
                         }else if($date_user->get_sex($from) == -1) {
-                            $date_ret = "请先完成注册";
+                            $date_ret = "请先输入男或女来完成注册\n";
                         }else {
                             /* Delete in Ours */
 //                            if($date_user->get_gdpu_talk_times($from) == 0) {
@@ -195,13 +200,7 @@ eot;
                                 $date_ret = $date_user->find_target_to_talk($from);
                             return $date_ret;
                         }
-                    }else {
-                        $step = 1;
-                        $date_user->register($from);
-                        $date_user->update_step($from, $step);
-                        $date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，电子邮箱地址;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n请输入性别： 男或女";
-                    }
-                    return $date_ret;
+                                        return $date_ret;
                     break;
                 case 'chat':
                     $about = "建议or合作 请发至反馈邮箱 \n（点击发送邮件）用户建议戳这 eight_mins@126.com \n联系微信号 jiamingpeng1994 或 Hyhhhha";
