@@ -93,7 +93,7 @@ eot;
     public function reply() {
         // get post data, May be due to the different environments
         $postStr = $GLOBALS ["HTTP_RAW_POST_DATA"];
-    //    file_put_contents ( "request.txt", $postStr );
+        //    file_put_contents ( "request.txt", $postStr );
 
         if (!empty($postStr)){
             $this->request = ( array ) simplexml_load_string ( $postStr, 'SimpleXMLElement', LIBXML_NOCDATA );
@@ -176,41 +176,46 @@ eot;
                 $menukey = $w->get_event_key ();
                 switch ($menukey) {
                 case 'date':
-                        if($date_user->is_talking($from)) {
-                            $date_ret = "你已经在聊天了喔\n";
-                        }else if($date_user->get_sex($from) == -1) {
-                            $date_ret = "请先输入男或女来完成注册\n";
-                        }else {
-                            /* Delete in Ours */
-//                            if($date_user->get_gdpu_talk_times($from) == 0) {
-//                                $date_ret = "要关注我们公众号体验\n";
-//                                return $date_ret;
-//                            }
+                    if(!$date_user->is_register($from)) {
+                        $date_user->register($from);
+                        $date_ret = "请先输入男或女来完成注册\n";
+                        return $date_ret;
+                    }
+                    if($date_user->is_talking($from)) {
+                        $date_ret = "你已经在聊天了喔\n";
+                    }else if($date_user->get_sex($from) == -1) {
+                        $date_ret = "请先输入男或女来完成注册\n";
+                    }else {
+                        /* Delete in Ours */
+                        //                            if($date_user->get_gdpu_talk_times($from) == 0) {
+                        //                                $date_ret = "要关注我们公众号体验\n";
+                        //                                return $date_ret;
+                        //                            }
 
-                            /* Delete in Gdpuer */
-                            if($date_user->get_real_first_talk_times($from)==0 && $date_user->is_transfer($from)==0) {
-                                $date_ret = "请点击详情介绍，获取图文介绍转发到朋友圈，截图回复给我们继续使用,谢谢！！\n";
-                                return $date_ret;
-                            }
-
-                            if($date_user->is_need_to_wait($from)) {
-                                $date_user->update_waiting_start_time($from);
-                                $date_ret = "你在排队中还有".$date_user->get_waiting_people($from)."人\n";
-                            }else
-                                $date_ret = $date_user->find_target_to_talk($from);
+                        /* Delete in Gdpuer */
+                        if($date_user->get_real_first_talk_times($from)==0 && $date_user->is_transfer($from)==0) {
+                            $date_ret = "请点击详情介绍，获取图文介绍转发到朋友圈，截图回复给我们继续使用,谢谢！！\n";
                             return $date_ret;
                         }
-                                        return $date_ret;
+
+                        if($date_user->is_need_to_wait($from)) {
+                            $date_user->update_waiting_start_time($from);
+                            $date_ret = "你在排队中还有".$date_user->get_waiting_people($from)."人\n";
+                        }else
+                            $date_ret = $date_user->find_target_to_talk($from);
+                        return $date_ret;
+                    }
+                    return $date_ret;
                     break;
                 case 'chat':
                     $about = "建议or合作 请发至反馈邮箱 \n（点击发送邮件）用户建议戳这 eight_mins@126.com \n联系微信号 jiamingpeng1994 或 Hyhhhha";
                     return $about;
                     break;
-                 case 'jubao':
+                case 'jubao':
                     $about = "如有不和谐行为，请将对方编号及截图 请发至举报邮箱 \n（点击发送邮件）eight_mins_110@126.com  \n您的支持就是我们的动力";
                     return $about;
                     break;   
-                
+
 
                 default:
                     # code...
@@ -254,20 +259,20 @@ eot;
 
         else if ($w->get_msg_type () == "text"){
             $content = trim ( $request ['Content'] );
-//            if($date_user->get_step($from) == 1) {
-//                $step = 2;
-//                $date_user->update_step($from, $step);
-//                $content = "请正确输入您的微信号或手机号\n";
-//                return $content;
-//            }
-//            if($date_user->get_step($from) == 2) {
-//                $date_user->update_wechat_id($from, $content);
-//                $step = 3;
-//                $date_user->update_step($from, $step);
-//                $content = "现在请输入你的性别(男或女)";
-//                return $content;
-//            }
-//
+            //            if($date_user->get_step($from) == 1) {
+            //                $step = 2;
+            //                $date_user->update_step($from, $step);
+            //                $content = "请正确输入您的微信号或手机号\n";
+            //                return $content;
+            //            }
+            //            if($date_user->get_step($from) == 2) {
+            //                $date_user->update_wechat_id($from, $content);
+            //                $step = 3;
+            //                $date_user->update_step($from, $step);
+            //                $content = "现在请输入你的性别(男或女)";
+            //                return $content;
+            //            }
+            //
             if($date_user->get_step($from) == 1) {
                 if (strstr ( $content, '女' )) {
                     $sex = 0;
@@ -281,10 +286,10 @@ eot;
                 $start_time = time();
                 $step = 4;
                 $date_user->update_step($from, $step);
-//                $want_to_talk = 1;
+                //                $want_to_talk = 1;
                 $want_to_talk = 0;
                 $date_user->update_all($from, $sex, $start_time, $want_to_talk);
-//                $content = $date_user->find_target_to_talk($from);
+                //                $content = $date_user->find_target_to_talk($from);
                 $content = "恭喜，已经完成注册.\n1.如有邀请码，请现在输入邀请码获得神秘礼物\n2.请直接点击左下角进行聊天\n";
                 return $content;
             }
