@@ -176,7 +176,7 @@ eot;
                 $menukey = $w->get_event_key ();
                 switch ($menukey) {
                 case 'qbt':
-                        $Id = $date_user->get_Id($open_id);
+                        $Id = $date_user->get_Id_by_open_id($open_id);
                         $qbt = $date_user->get_qbt($open_id);
                         $invitation_code = $date_user->get_invitation_code($open_id);
                         $date_ret = "你的丘比特之箭的数量是".$qbt."\n个人专属码(Id)是".$Id."\n当好友关注后输入你的专属码注册，两人皆可以获得一支丘比特之箭，\n可以使用该道具来续聊和免排队哦";
@@ -345,7 +345,8 @@ eot;
         }else if($date_user->get_step($open_id) == 11) {
             $step = 4;
             $date_user->update_step($open_id, $step);
-            $target_id = $content;
+            $Id = $content;
+            $target_id = $date_user->get_open_id_by_Id($Id);
             $ret = $date_user->check_continue_status($open_id, $target_id);
             if($ret != "success") {
                 return $ret;

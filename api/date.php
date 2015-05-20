@@ -92,7 +92,7 @@ class eight_min_date{
         return $Id;
     }
 
-    public function get_Id($open_id){
+    public function get_Id_by_open_id($open_id){
         $sql = "SELECT `Id` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
         $result = mysql_query($sql);
         $array = mysql_fetch_array($result);
@@ -283,6 +283,14 @@ class eight_min_date{
         }else {
             return 0;
         }
+    }
+
+    public function get_open_id_by_Id($Id){
+        $sql = "SELECT `open_id` FROM `gdpu_date` WHERE `Id` = '$Id' ";
+        $result = mysql_query($sql);
+        $array = mysql_fetch_array($result);
+        $open_id = $array['open_id'];
+        return $open_id ;
     }
 
     public function get_target($open_id){
