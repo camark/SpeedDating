@@ -398,7 +398,6 @@ class eight_min_date{
     }
 
     public function continue_talking($open_id, $target_id) {
-        $target_id = self::get_target($open_id);
         if(self::is_talking($target_id))
             return "很遗憾，你想联系的那个ta已经在聊天了喔\n或者尝试等8分钟,再用丘比特之箭射一下？";
         if(self::get_want_to_talk($target_id))
