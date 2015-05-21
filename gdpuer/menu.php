@@ -26,7 +26,7 @@ $data='{
         
         
         {
-            "name": "点我开始", 
+            "name": "约会吧", 
             "sub_button": [
                 {    
           "type":"click",
@@ -38,24 +38,40 @@ $data='{
                     "type":"click",
                    "name":"找回Ta续聊",
                     "key": "xuliao"
-                }
+                },
+               
                 
             ]
         },
         {
-            "name": "丘比特之箭", 
+            "name": "爱神指引", 
             "sub_button": [
-                {    
-               "type":"view",
-               "name":"详情介绍",
-               "url":"http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd"
-            },
-                
+               
+                {
+                    "type":"click",
+                   "name":"你的邀请码",
+                    "key": "invitation"
+                },
                 {
                     "type":"click",
                    "name":"丘比特之箭",
                     "key": "qbt"
-                }
+                },
+                  {    
+          "type":"click",
+          "name":"修改性别",
+          "key":"change_sex"
+        },
+                 {    
+               "type":"view",
+               "name":"使用指南",
+               "url":"http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd"
+            },
+                 {    
+               "type":"view",
+               "name":"详情介绍",
+               "url":"http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd"
+            }
                 
             ]
         },
