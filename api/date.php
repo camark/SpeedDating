@@ -469,8 +469,7 @@ class eight_min_date{
         if(self::get_real_first_talk_times($open_id) > 0)
             self::update_real_first_talk_times($open_id);
 
-        $content = "sorry,时间已到，如果想继续聊～请记住对方的编号id:".$talking_id."哦～\n 曾有一个人,缘分让她来到了我的世界，8分钟，让我想进一步了解这个人，小助手，你能帮我用丘比特之箭去射(联系)他吗？\n
-            回复”续聊“，使用丘比特之箭再续前缘";
+        $content = "sorry,时间已到，如果想继续聊～请记住对方的编号id:".$talking_id."哦～\n 曾有一个人,缘分让她来到了我的世界，8分钟，让我想进一步了解这个人，小助手，你能帮我用丘比特之箭去射(联系)他吗？\n 点击左下角的点我开始，和ta续聊，使用丘比特之箭再续前缘";
         return $content;
     }
 
