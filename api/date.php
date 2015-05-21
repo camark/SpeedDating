@@ -34,8 +34,9 @@ class eight_min_date{
         $invitation_code = -1;
         $reward = 0;
         $left_change_sex_times = 2;
+        $had_talk_times = 0;
         $waiting_start_time=$record_waiting_start_time_flag=$transfer=0;
-        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer', '$invitation_code', '$reward', '$left_change_sex_times')";
+        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer', '$invitation_code', '$reward', '$left_change_sex_times', '$had_talk_times')";
         mysql_query($sql);
     }
 
@@ -375,7 +376,7 @@ class eight_min_date{
             $myself = self::get_description($girl);
             $target_sex = $boy;
         }
-        $sql = "SELECT * FROM `gdpu_date`  WHERE `sex` = '$target_sex' AND `want_to_talk` = 1 ";
+        $sql = "SELECT * FROM `gdpu_date`  WHERE `sex` = '$target_sex' AND `want_to_talk` = 1 ORDER BY `had_talk_times`";
         $result = mysql_query($sql);
         $array = mysql_fetch_array($result);
         if(mysql_num_rows($result)) {
@@ -396,6 +397,10 @@ class eight_min_date{
             $sql = "UPDATE `gdpu_date` SET `want_to_talk` = 0 WHERE `open_id` = '$target_id' ";
             mysql_query($sql);
 
+            $sql = "UPDATE `gdpu_date` SET `had_talk_times` = `had_talk_times`+1  WHERE `open_id` = '$open_id' ";
+            mysql_query($sql);
+            $sql = "UPDATE `gdpu_date` SET `had_talk_times` = `had_talk_times`+1 WHERE `open_id` = '$target_id' ";
+            mysql_query($sql);
             $talking_id = $array['Id'];
             $msg = "匹配成功,你约到了代号为".$talking_id."的".$target."聊天\n发图片和语音聊天更有趣喔\n";
             $type = 'text';
