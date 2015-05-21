@@ -33,8 +33,9 @@ class eight_min_date{
         $waiting_people = 99;
         $invitation_code = -1;
         $reward = 0;
+        $left_change_sex_times = 2;
         $waiting_start_time=$record_waiting_start_time_flag=$transfer=0;
-        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer', '$invitation_code', '$reward')";
+        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer', '$invitation_code', '$reward', '$left_change_sex_times')";
         mysql_query($sql);
     }
 
@@ -65,6 +66,11 @@ class eight_min_date{
 
     public function update_real_first_talk_times($open_id){
         $sql = "UPDATE `gdpu_date` SET `real_first_talk_times` = `real_first_talk_times`-1 WHERE `open_id` = '$open_id' ";
+        mysql_query($sql);
+    }
+
+    public function update_sex($open_id, $sex){
+        $sql = "UPDATE `gdpu_date` SET `sex` = '$sex' WHERE `open_id` = '$open_id' ";
         mysql_query($sql);
     }
 
@@ -142,6 +148,20 @@ class eight_min_date{
     public function update_invitation_status($open_id, $invitation_code){
         $sql = "UPDATE `gdpu_date` SET `invitation_code` = '$invitation_code' WHERE `open_id` = '$open_id' ";
         mysql_query($sql);
+    }
+
+    public function minus_left_change_sex_times($open_id)
+    {
+        $sql = "UPDATE `gdpu_date` SET `left_change_sex_times` = `left_change_sex_times`-1 WHERE `open_id` = '$open_id' ";
+        mysql_query($sql);
+    }
+
+    public function get_left_change_sex_times($open_id){
+        $sql = "SELECT `left_change_sex_times` FROM `gdpu_date` WHERE `open_id` = '$open_id' ";
+        $result = mysql_query($sql);
+        $array = mysql_fetch_array($result);
+        $left_change_sex_times = $array['left_change_sex_times'];
+        return $left_change_sex_times;
     }
 
     public function minus_qbt($open_id)

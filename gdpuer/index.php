@@ -216,6 +216,23 @@ eot;
                     }
                     return $date_ret;
                     break;
+                case 'change_sex':
+                    if($date_user->get_sex($open_id) == -1) {
+                        $date_ret = "请先输入男或女来完成注册\n";
+                        return $date_ret;
+                    }
+                    if($date_user->is_talking($open_id))
+                        return "你已经在聊天了喔";
+                    $left_change_sex_times = $date_user->get_left_change_sex_times($open_id);
+                    if($left_change_sex_times > 0) {
+                        $date_user->update_step($open_id, 12);
+                        $next = "请输入男或女，修正输错的性别\n你的修改次数剩下".$left_change_sex_times."次";
+                    }else {
+                        $next = "你的修改次数已经用光了，如有问题，请联系帅帅的开发者";
+                    }
+                    return $next;
+                    break;
+
                 case 'xuliao':
                     if($date_user->get_sex($open_id) == -1) {
                         $date_ret = "请先输入男或女来完成注册\n";
@@ -332,7 +349,8 @@ eot;
                 return $content;
             }
         }
-        if(preg_match('/^[0-9]*$/',$content) && $date_user->get_step($open_id)!=11) {
+        $step = $date_user->get_step($open_id);
+        if(preg_match('/^[0-9]*$/',$content) && $step<11) {
             if($date_user->get_invitation_code($open_id) == -1) {
                 if($date_user->check_invitation_code($content)) {
                     $date_user->plus_twos_qbt($open_id, $content);
@@ -344,7 +362,7 @@ eot;
             }else {
                 $reply_content = "你已经输入过邀请码了\n但你可以让其他人输入你的专属码来获得道具——丘比特之箭";
             }
-        }else if($date_user->get_step($open_id) == 11) {
+        }else if($step == 11) {
             $step = 4;
             $date_user->update_step($open_id, $step);
             $Id = $content;
@@ -357,6 +375,22 @@ eot;
                 $reply_content = $date_user->continue_talking($open_id, $target_id);
             }else {
                 return "不存在此Id编号";
+            }
+        }else if($step == 12) {
+            $step = 4;
+            $date_user->update_step($open_id, $step);
+            if (strstr ( $content, '女' )) {
+                $sex = 0;
+                $date_user->minus_left_change_sex_times($open_id);
+                $date_user->update_sex($open_id, $sex);
+                $reply_content = "你已成功修改自己的性别为：女";
+            }else if (strstr ( $content, '男' )) {
+                $sex = 1;
+                $date_user->minus_left_change_sex_times($open_id);
+                $date_user->update_sex($open_id, $sex);
+                $reply_content = "你已成功修改自己的性别为：男";
+            }else {
+                $reply_content = "请输入正确的信息： 男或女";
             }
         }else {
             $reply_content = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
