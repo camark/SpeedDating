@@ -402,7 +402,8 @@ class eight_min_date{
             $sql = "UPDATE `gdpu_date` SET `had_talk_times` = `had_talk_times`+1 WHERE `open_id` = '$target_id' ";
             mysql_query($sql);
             $talking_id = $array['Id'];
-            $msg = "匹配成功,你约到了代号为".$talking_id."的".$target."聊天\n发图片和语音聊天更有趣喔\n";
+             $msg = "你约到了代号为".$talking_id."的[".$target."]\n发图片和语音聊天更有趣喔\n";
+            //$msg = "匹配成功,你约到了代号为".$talking_id."的[".$target."聊天\n发图片和语音聊天更有趣喔\n";
             $type = 'text';
             $video_id = 0;
             self::sendmsg($open_id, $msg, $type, $video_id);
@@ -411,7 +412,7 @@ class eight_min_date{
             $result = mysql_query($sql);
             $array = mysql_fetch_array($result);
             $talking_id = $array['Id'];
-            $msg = "匹配成功,你约到了代号为".$talking_id."的".$myself."聊天\n发图片和语音聊天更有趣喔\n";
+            $msg = "你约到了代号为".$talking_id."的[".$myself."]\n发图片和语音聊天更有趣喔\n";
             self::sendmsg($target_id, $msg, $type, $video_id);
 
             $add = 2;//only excute once
@@ -493,8 +494,10 @@ class eight_min_date{
 //            self::update_gdpu_talk_times($open_id);
         if(self::get_real_first_talk_times($open_id) > 0)
             self::update_real_first_talk_times($open_id);
+        $content = "sorry,时间已到。如果想继续聊，请记住对方的编号id:".$talking_id."\n并点击左下角的约会吧，选择和ta续聊，使用丘比特之箭再续前缘 ";
 
-        $content = "sorry,时间已到，如果想继续聊～请记住对方的编号id:".$talking_id."哦～\n 曾有一个人,缘分让她来到了我的世界，8分钟，让我想进一步了解这个人，小助手，你能帮我用丘比特之箭去射(联系)他吗？\n 点击左下角的点我开始，和ta续聊，使用丘比特之箭再续前缘";
+
+        //$content = "sorry,时间已到，如果想继续聊～请记住对方的编号id:".$talking_id."哦～\n 曾有一个人,缘分让她来到了我的世界，8分钟，让我想进一步了解这个人，小助手，你能帮我用丘比特之箭去射(联系)他吗？\n 点击左下角的点我开始，和ta续聊，使用丘比特之箭再续前缘";
         return $content;
     }
 
