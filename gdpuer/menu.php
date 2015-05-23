@@ -38,7 +38,7 @@ $data='{
                     "type":"click",
                    "name":"找回Ta续聊",
                     "key": "xuliao"
-                },
+                }
                
                 
             ]
@@ -65,7 +65,7 @@ $data='{
                  {    
                "type":"view",
                "name":"使用指南",
-               "url":"http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd"
+               "url":"http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=208047099&idx=2&sn=79a7f45d7fae0b168726f8e19a1e4da4#rd"
             },
                  {    
                "type":"view",
