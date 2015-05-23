@@ -1,4 +1,6 @@
 <?php
+require_once ("./topic.php");
+$topic = new topic ;
 class eight_min_date{
     function __construct(){
         $con = mysql_connect('localhost','christopher','wudbadmin')or die(mysql_error());
@@ -402,7 +404,8 @@ class eight_min_date{
             $sql = "UPDATE `gdpu_date` SET `had_talk_times` = `had_talk_times`+1 WHERE `open_id` = '$target_id' ";
             mysql_query($sql);
             $talking_id = $array['Id'];
-             $msg = "你约到了代号为".$talking_id."的[".$target."]\n发图片和语音聊天更有趣喔\n";
+            $topic_content = $topic->type();
+             $msg = "你约到了代号为".$talking_id."的[".$target."]\n发图片和语音聊天更有趣喔\n".$topic_content;
             //$msg = "匹配成功,你约到了代号为".$talking_id."的[".$target."聊天\n发图片和语音聊天更有趣喔\n";
             $type = 'text';
             $video_id = 0;
@@ -412,7 +415,7 @@ class eight_min_date{
             $result = mysql_query($sql);
             $array = mysql_fetch_array($result);
             $talking_id = $array['Id'];
-            $msg = "你约到了代号为".$talking_id."的[".$myself."]\n发图片和语音聊天更有趣喔\n";
+            $msg = "你约到了代号为".$talking_id."的[".$myself."]\n发图片和语音聊天更有趣喔\n".$topic_content;
             self::sendmsg($target_id, $msg, $type, $video_id);
 
             $add = 2;//only excute once
