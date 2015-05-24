@@ -585,9 +585,10 @@ class eight_min_date{
         while($row=mysql_fetch_array($result)){
         $data[]=$row;
         }
-        $num1=mysql_num_rows($result);
-         for($i=0;$i<=$num1-1;$i++){
-            $current_time = time();
+        $num=mysql_num_rows($result);
+        $current_time = time();
+         for($i=0;$i<=$num-1;$i++){
+            
             $start_time = $data[$i]['start_time'];
             $open_id = $data[$i]['open_id'];
             $time_gap = $current_time - $start_time;
