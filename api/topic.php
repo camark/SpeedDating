@@ -7,7 +7,7 @@ class topic{
     }
     //
     	public function type(){
-    		$num = rand(1,2);
+    		$num = rand(1,8);
     		if($num==1){
     			$content = self::story();
     			$content = "要不咱们玩故事接龙,你一句，我一句。故事开头是\n[".$content."]\nbegin~go~";

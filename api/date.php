@@ -563,11 +563,50 @@ class eight_min_date{
             mysql_query($sql);
             $content = "请跟对方打个招呼吧：）\n";
         }
-        else
-            $content = "sorry，目前没有想要适合聊天的人，请耐心等候：）\n当有适当的人，小助手会第一时间会通知你\n";
+        else{
+            self::update_start_want_to_talk();
+            $num = rand(1,3);
+                if($num==1){
+                    $content = "你的那个ta或许还在路上，你再等等咯 \n当有适当的人，丘比特会第一时间会通知你";
+                }else if($num==2){
+                    $content = "sorry，目前没有想要聊天的人，请耐心等候：）\n虽然萌妹纸很稀有，系统是绝对公平的";
+                }else if($num==3){
+                    $content = "男生太多？快召唤你身边的妹纸加入吧~~ \n你正在匹配中，丘比特正在为你寻找目标";
+                }
+        }
+            
         return $content;
     }
 
+    public function update_start_want_to_talk(){
+        $sql = "SELECT * FROM `gdpu_date` WHERE `want_to_talk` = '1' ";
+        $result = mysql_query($sql);
+        $data=array();
+        while($row=mysql_fetch_array($result)){
+        $data[]=$row;
+        }
+        $num1=mysql_num_rows($result);
+         for($i=0;$i<=$num1-1;$i++){
+            $current_time = time();
+            $start_time = $data[$i]['start_time'];
+            $open_id = $data[$i]['open_id'];
+            $time_gap = $current_time - $start_time;
+            $min = date('i', $time_gap);
+            if($min > 30) {
+                $sql = "UPDATE `gdpu_date` SET `want_to_talk` = 0 WHERE `start_time` = '$start_time' ";
+                mysql_query($sql);
+                $num = rand(1,3);
+                if($num==1){
+                    $msg = "Ta们害羞~~都躲起来了，请按按钮再匹配哦，等待不是一个人的寂寞";
+                }else if($num==2){
+                    $msg = "Ta们或许出去玩了，再按开始试试，系统是绝对公平的，萌妹纸快要出现了";
+                }else if($num==3){
+                    $msg = "男生太多？快召唤你身边的妹纸加入吧~~  等待不是一个人的寂寞，点击开始继续寻找真爱";
+                }
+                self::sendmsg($open_id, $msg, 'text', NULL);
+            }
+    }
+}
     public function sendmsg($open_id,$content,$type,$video_id){
         $sql = "SELECT `token` FROM `gdpu_token` where `Id`='1'";
         $result=mysql_query($sql);
