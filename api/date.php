@@ -37,8 +37,8 @@ class eight_min_date{
         $reward = 0;
         $left_change_sex_times = 2;
         $had_talk_times = 0;
-        $waiting_start_time=$record_waiting_start_time_flag=$transfer=0;
-        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer', '$invitation_code', '$reward', '$left_change_sex_times', '$had_talk_times')";
+        $waiting_start_time=$record_waiting_start_time_flag=$transfer=$start_want_to_talk=0;
+        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer', '$invitation_code', '$reward', '$left_change_sex_times', '$had_talk_times','start_want_to_talk')";
         mysql_query($sql);
     }
 
@@ -226,6 +226,9 @@ class eight_min_date{
         $sql = "UPDATE `gdpu_date` SET `record_waiting_start_time_flag` = '$flag' WHERE `open_id` = '$open_id' ";
         mysql_query($sql);
     }
+
+
+    
 
     public function update_waiting_start_time($open_id){
         if(self::get_record_waiting_start_time_flag($open_id))
@@ -564,7 +567,8 @@ class eight_min_date{
             $content = "请跟对方打个招呼吧：）\n";
         }
         else{
-            self::update_start_want_to_talk();
+            self::update_other_want_to_talk();
+            self::update_start_want_to_talk($open_id);
             $num = rand(1,3);
                 if($num==1){
                     $content = "你的那个ta或许还在路上，你再等等咯 \n当有适当的人，丘比特会第一时间会通知你";
@@ -578,16 +582,24 @@ class eight_min_date{
         return $content;
     }
 
-    public function update_start_want_to_talk(){
+    public function update_start_want_to_talk($open_id){
+        
+            $current_time = time();
+            $sql = "UPDATE `gdpu_date` SET `start_want_to_talk` = '$current_time' WHERE `open_id` = '$open_id' ";
+            mysql_query($sql);
+        
+    }
+
+    public function update_other_want_to_talk(){
         $sql = "SELECT * FROM `gdpu_date` WHERE `want_to_talk` = '1' ";
         $result = mysql_query($sql);
         $data=array();
         while($row=mysql_fetch_array($result)){
         $data[]=$row;
         }
-        $num=mysql_num_rows($result);
+        $num = mysql_num_rows($result);
         $current_time = time();
-         for($i=0;$i<=$num-1;$i++){
+         for($i=0;$i<$num;$i++){
             
             $start_time = $data[$i]['start_time'];
             $open_id = $data[$i]['open_id'];
