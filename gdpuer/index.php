@@ -1,5 +1,6 @@
 <?php
 require_once ("../api/date.php");
+require_once ("../api/topic.php");
 class Wechat {
     public $token;
     public $request = array ();
@@ -146,6 +147,7 @@ eot;
         $reply_content ="";
 
         $date_user = new eight_min_date;
+        $topic = new topic;
         // store session data
 
         // 大众接口
@@ -251,7 +253,7 @@ eot;
                     break;
 
                 case 'chat':
-                    $about = "建议or合作 请发至反馈邮箱 \n（点击发送邮件）用户建议戳这 eight_mins@126.com \n联系微信号:\njiamingpeng1994 或\nYongHaoHu--QQ: 645310824(这是有一个非常棒的女朋友的家伙xD)";
+                    $about = "建议or合作 请发至反馈邮箱 \n（点击发送邮件）用户建议戳这 eight_mins@126.com \n联系:\nPJM \n微信号 jiamingpeng1994 \n或\nYongHaoHu--QQ: 645310824(这货有女票了)";
                     return $about;
                     break;
                 case 'jubao':
@@ -343,7 +345,13 @@ eot;
                     $target = $date_user->get_target($open_id);
                     $date_user->stop_talking($target);
                     $content = "你的聊天已结束，请继续享用我们的8分钟约会：P\n";
-                }else {
+                }else if($content == "换"){
+                    $content = $topic->type();
+                    $target_id = $date_user->get_target($open_id);
+                    
+                    $date_user->sendmsg($target_id, $content, 'text', NULL);
+
+                } else {
                     $target = $date_user->get_target($open_id);
                     $content = $date_user->filt_wechat_num($content);
                     $type = "text";

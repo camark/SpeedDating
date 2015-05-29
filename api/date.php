@@ -1,4 +1,6 @@
 <?php
+require_once ("topic.php");
+
 class eight_min_date{
     function __construct(){
         $con = mysql_connect('localhost','christopher','wudbadmin')or die(mysql_error());
@@ -35,8 +37,8 @@ class eight_min_date{
         $reward = 0;
         $left_change_sex_times = 2;
         $had_talk_times = 0;
-        $waiting_start_time=$record_waiting_start_time_flag=$transfer=0;
-        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer', '$invitation_code', '$reward', '$left_change_sex_times', '$had_talk_times')";
+        $waiting_start_time=$record_waiting_start_time_flag=$transfer=$start_want_to_talk=0;
+        $sql = "insert into `gdpu_date` values('', '$open_id', '$sex', '$target_id', '$talking','$wechat_id','$start_time','$want_to_talk', '$step', '$gdpu_talk_times', '$real_first_talk_times', '$left_talk_times', '$waiting_people', '$waiting_start_time','$record_waiting_start_time_flag', '$transfer', '$invitation_code', '$reward', '$left_change_sex_times', '$had_talk_times','start_want_to_talk')";
         mysql_query($sql);
     }
 
@@ -225,6 +227,9 @@ class eight_min_date{
         mysql_query($sql);
     }
 
+
+    
+
     public function update_waiting_start_time($open_id){
         if(self::get_record_waiting_start_time_flag($open_id))
             /* do nothing */;
@@ -405,7 +410,9 @@ class eight_min_date{
             $sql = "UPDATE `gdpu_date` SET `had_talk_times` = `had_talk_times`+1 WHERE `open_id` = '$target_id' ";
             mysql_query($sql);
             $talking_id = $array['Id'];
-             $msg = "你约到了代号为".$talking_id."的[".$target."]\n发图片和语音聊天更有趣喔\n";
+            $topic = new topic ;
+            $topic_content = $topic->type();
+             $msg = "你约到了代号为".$talking_id."的[".$target."]\n发图片和语音聊天更有趣喔\n".$topic_content."\n回复 换 可以换话题";
             //$msg = "匹配成功,你约到了代号为".$talking_id."的[".$target."聊天\n发图片和语音聊天更有趣喔\n";
             $type = 'text';
             $video_id = 0;
@@ -415,7 +422,7 @@ class eight_min_date{
             $result = mysql_query($sql);
             $array = mysql_fetch_array($result);
             $talking_id = $array['Id'];
-            $msg = "你约到了代号为".$talking_id."的[".$myself."]\n发图片和语音聊天更有趣喔\n";
+            $msg = "你约到了代号为".$talking_id."的[".$myself."]\n发图片和语音聊天更有趣喔\n".$topic_content."\n回复 换 可以换话题";
             self::sendmsg($target_id, $msg, $type, $video_id);
 
             $add = 2;//only excute once
@@ -562,11 +569,60 @@ class eight_min_date{
             mysql_query($sql);
             $content = "请跟对方打个招呼吧：）\n";
         }
-        else
-            $content = "sorry，目前没有想要适合聊天的人，请耐心等候：）\n当有适当的人，小助手会第一时间会通知你\n";
+        else{
+            self::update_other_want_to_talk();
+            self::update_start_want_to_talk($open_id);
+            $num = rand(1,3);
+                if($num==1){
+                    $content = "你的那个ta或许还在路上，你再等等咯 \n当有适当的人，丘比特会第一时间会通知你";
+                }else if($num==2){
+                    $content = "sorry，目前没有想要聊天的人，请耐心等候：）\n虽然萌妹纸很稀有，系统是绝对公平的";
+                }else if($num==3){
+                    $content = "男生太多？快召唤你身边的妹纸加入吧~~ \n你正在匹配中，丘比特正在为你寻找目标";
+                }
+        }
+            
         return $content;
     }
 
+    public function update_start_want_to_talk($open_id){
+        
+            $current_time = time();
+            $sql = "UPDATE `gdpu_date` SET `start_want_to_talk` = '$current_time' WHERE `open_id` = '$open_id' ";
+            mysql_query($sql);
+        
+    }
+
+    public function update_other_want_to_talk(){
+        $sql = "SELECT * FROM `gdpu_date` WHERE `want_to_talk` = '1' ";
+        $result = mysql_query($sql);
+        $data=array();
+        while($row=mysql_fetch_array($result)){
+        $data[]=$row;
+        }
+        $num = mysql_num_rows($result);
+        $current_time = time();
+         for($i=0;$i<$num;$i++){
+            
+            $start_time = $data[$i]['start_time'];
+            $open_id = $data[$i]['open_id'];
+            $time_gap = $current_time - $start_time;
+            $min = date('i', $time_gap);
+            if($min > 30) {
+                $sql = "UPDATE `gdpu_date` SET `want_to_talk` = 0 WHERE `start_time` = '$start_time' ";
+                mysql_query($sql);
+                $num = rand(1,3);
+                if($num==1){
+                    $msg = "Ta们害羞~~都躲起来了，请按按钮再匹配哦，等待不是一个人的寂寞";
+                }else if($num==2){
+                    $msg = "Ta们或许出去玩了，再按开始试试，系统是绝对公平的，萌妹纸快要出现了";
+                }else if($num==3){
+                    $msg = "男生太多？快召唤你身边的妹纸加入吧~~  等待不是一个人的寂寞，点击开始继续寻找真爱";
+                }
+                self::sendmsg($open_id, $msg, 'text', NULL);
+            }
+    }
+}
     public function sendmsg($open_id,$content,$type,$video_id){
         $sql = "SELECT `token` FROM `gdpu_token` where `Id`='1'";
         $result=mysql_query($sql);
