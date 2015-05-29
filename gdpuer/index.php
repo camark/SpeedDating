@@ -396,13 +396,20 @@ eot;
                 $date_user->minus_left_change_sex_times($open_id);
                 $date_user->update_sex($open_id, $sex);
                 $reply_content = "你已成功修改自己的性别为：女";
-            }else if (strstr ( $content, '男' )) {
+            }else if(strstr ( $content, '男' )) {
                 $sex = 1;
                 $date_user->minus_left_change_sex_times($open_id);
                 $date_user->update_sex($open_id, $sex);
                 $reply_content = "你已成功修改自己的性别为：男";
             }else {
                 $reply_content = "请输入正确的信息： 男或女";
+            }
+        }else if(strstr ( $content, '取消' )) {
+            if($date_user->get_want_to_talk($open_id) == 1) {
+                $date_user->update_want_to_talk_to_zero($open_id);
+                $reply_content = "你已经成功取消匹配状态\n请按[约会吧]按钮，再点[点我开始]按钮开始约会";
+            }else {
+                $reply_content = "你没有在等待中\n 请按[约会吧]按钮，再点[点我开始]按钮开始约会";
             }
         }else {
             $reply_content = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";

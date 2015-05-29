@@ -335,7 +335,10 @@ class eight_min_date{
         return $want_to_talk ;
     }
 
-
+    public function update_want_to_talk_to_zero($open_id){
+        $sql = "UPDATE `gdpu_date` SET `want_to_talk` = '0' WHERE `open_id` = '$open_id' ";
+        mysql_query($sql);
+    }
 
     public function get_time($open_id){
         $sql = "SELECT `start_time` FROM `gdpu_date`  WHERE `open_id` = '$open_id' ";
