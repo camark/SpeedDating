@@ -83,7 +83,7 @@ $data='{
                 
                 {
                     "type": "view", 
-                    "name": "建议入口", 
+                    "name": "建议有奖", 
                     "url": "http://av.jejeso.com/Ours/eightmins/api/add_advices/commit.html"
                 },
                 {

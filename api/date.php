@@ -567,13 +567,14 @@ class eight_min_date{
             $content = "请跟对方打个招呼吧：）\n";
         }
         else{
-            self::update_other_want_to_talk();
+            
             self::update_start_want_to_talk($open_id);
+            self::update_other_want_to_talk();
             $num = rand(1,3);
                 if($num==1){
                     $content = "你的那个ta或许还在路上，你再等等咯 \n当有适当的人，丘比特会第一时间会通知你";
                 }else if($num==2){
-                    $content = "sorry，目前没有想要聊天的人，请耐心等候：）\n虽然萌妹纸很稀有，系统是绝对公平的";
+                    $content = "sorry，目前没有想要聊天的人，请耐心等候：）\n虽然萌妹纸很稀有，但是系统是绝对公平的";
                 }else if($num==3){
                     $content = "男生太多？快召唤你身边的妹纸加入吧~~ \n你正在匹配中，丘比特正在为你寻找目标";
                 }
@@ -598,23 +599,23 @@ class eight_min_date{
         $data[]=$row;
         }
         $num = mysql_num_rows($result);
-        $current_time = time();
+        
          for($i=0;$i<$num;$i++){
-            
-            $start_time = $data[$i]['start_time'];
+            $current_time = time();
+            $start_want_to_talk = $data[$i]['start_want_to_talk'];
             $open_id = $data[$i]['open_id'];
-            $time_gap = $current_time - $start_time;
+            $time_gap = $current_time - $start_want_to_talk;
             $min = date('i', $time_gap);
             if($min > 30) {
-                $sql = "UPDATE `gdpu_date` SET `want_to_talk` = 0 WHERE `start_time` = '$start_time' ";
+                $sql = "UPDATE `gdpu_date` SET `want_to_talk` = 0 WHERE `start_want_to_talk` = '$start_want_to_talk' ";
                 mysql_query($sql);
                 $num = rand(1,3);
                 if($num==1){
-                    $msg = "Ta们害羞~~都躲起来了，请按按钮再匹配哦，等待不是一个人的寂寞";
+                    $msg = "【已经断开了你的等待，请按按钮再匹配哦】，Ta们害羞~~都躲起来了，等待不是一个人的寂寞";
                 }else if($num==2){
-                    $msg = "Ta们或许出去玩了，再按开始试试，系统是绝对公平的，萌妹纸快要出现了";
+                    $msg = "【已经断开了你的等待，再按开始试试】Ta们或许出去玩了，系统是绝对公平的，萌妹纸快要出现了";
                 }else if($num==3){
-                    $msg = "男生太多？快召唤你身边的妹纸加入吧~~  等待不是一个人的寂寞，点击开始继续寻找真爱";
+                    $msg = "男生太多？快召唤你身边的妹纸加入吧~~  等待不是一个人的寂寞，【已经断开刚才的等待，点击开始】继续寻找真爱";
                 }
                 self::sendmsg($open_id, $msg, 'text', NULL);
             }
