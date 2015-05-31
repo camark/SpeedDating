@@ -26,8 +26,8 @@ class eight_min_date{
         mysql_query($sql);
     }
 
-    public function register($open_id){
-        $sex= -1;
+    public function register($open_id,$sex){
+        
         $target_id=$talking=$wechat_id=$start_time=$want_to_talk=$step=0;
         $gdpu_talk_times = 3;
         $real_first_talk_times = 9;
@@ -624,6 +624,17 @@ class eight_min_date{
             }
     }
 }
+    public function get_user_info($open_id){
+        $sql = "SELECT `token` FROM `gdpu_token` where `Id`='1'";
+        $result=mysql_query($sql);
+        $array=mysql_fetch_array($result);
+        $ACC_TOKEN = $array['token'];
+        $TOKEN_URL="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$ACC_TOKEN."&openid=".$open_id."&lang=zh_CN";
+        $json=file_get_contents($TOKEN_URL);
+        $result=json_decode($json,true);
+        return $result;
+    }
+
     public function sendmsg($open_id,$content,$type,$video_id){
         $sql = "SELECT `token` FROM `gdpu_token` where `Id`='1'";
         $result=mysql_query($sql);

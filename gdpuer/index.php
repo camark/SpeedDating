@@ -162,9 +162,13 @@ eot;
                 if($date_user->is_register($open_id)) {
                     $date_ret = "你已经完成注册了，请点击左下角按钮继续使用\n";
                 }else {
-                    $date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：\n1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，微信号;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n请输入性别： 男或女";
-                    $step = 1;
-                    $date_user->register($open_id);
+                    //$date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：\n1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，微信号;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n请输入性别： 男或女";
+                    $date_ret = "欢迎来到大学生8分钟交友\n1.今天是六一，回复 六一 获取神秘礼物、\n\n2.点击左下角按钮 即可开始匿名聊天";
+                    $user_info = $date_user->get_user_info($open_id);
+                    $sex = $user_info['sex'];
+                    if($sex==1){$sex=1;}else{$sex=0;}
+                    $step = 4;
+                    $date_user->register($open_id,$sex);
                     $date_user->update_step($open_id, $step);
                 }
                 return $date_ret;
