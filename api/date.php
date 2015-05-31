@@ -34,7 +34,7 @@ class eight_min_date{
         $left_talk_times = 10;
         $waiting_people = 99;
         $invitation_code = -1;
-        $reward = 0;
+        $reward = 1;
         $left_change_sex_times = 2;
         $had_talk_times = 0;
         $waiting_start_time=$record_waiting_start_time_flag=$transfer=$start_want_to_talk=0;
