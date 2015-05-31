@@ -412,7 +412,7 @@ eot;
                 $reply_content = "你没有在等待中\n 请按[约会吧]按钮，再点[点我开始]按钮开始约会";
             }
         }else if(strstr ( $content, '六一' )) {
-                    $url = "http://av.jejeso.com/Ours/jm/61/index.php?open_id=".$from;
+                    $url = "http://av.jejeso.com/Ours/jm/61/index.php?open_id=".$open_id;
                     $reply_content = "#title|送你一份奇葩礼物?@title|点此获得你专属的奇葩礼物xD。#url|".$url;
                     $reply_content = self::replypic($reply_content);
                     return $reply_content;
