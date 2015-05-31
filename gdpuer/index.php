@@ -411,7 +411,13 @@ eot;
             }else {
                 $reply_content = "你没有在等待中\n 请按[约会吧]按钮，再点[点我开始]按钮开始约会";
             }
-        }else {
+        }else if(strstr ( $content, '六一' )) {
+                    $url = "http://av.jejeso.com/Ours/jm/61/index.php?open_id=".$from;
+                    $reply_content = "#title|送你一份奇葩礼物?@title|点此获得你专属的奇葩礼物xD。#url|".$url;
+                    $reply_content = self::replypic($reply_content);
+                    return $reply_content;
+        }
+        else {
             $reply_content = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";
             $reply_content = self::replypic($reply_content);
         }
