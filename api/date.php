@@ -4,9 +4,46 @@ require_once ("topic.php");
 class eight_min_date{
     function __construct(){
         $con = mysql_connect('localhost','christopher','wudbadmin')or die(mysql_error());
-        mysql_select_db('ours');
+        mysql_select_db('av');
         mysql_query("SET NAMES 'UTF8'");
     }
+    //
+    public function get_dingdan($dingdan){
+        $sql = "SELECT * FROM `dingdan`  WHERE `dingdan` ='$dingdan'";
+        $result=mysql_query($sql);
+        if(mysql_num_rows($result))
+            $res = 1;
+        else
+            $res = 0;
+        return $res;
+    }
+    public function charu_dingdan($open_id,$dingdan){
+        $sql = "insert into `dingdan` values('', '$open_id','$dingdan')";
+        mysql_query($sql);
+    }
+    public function get_pay($dingdan){
+        $sql = "SELECT `token` FROM `gdpu_token` where `Id`='2'";
+        $result=mysql_query($sql);
+        $array=mysql_fetch_array($result);
+        $ACC_TOKEN = $array['token'];
+        $TOKEN_URL='http://api.vdian.com/api?param={"order_id":"'.$dingdan.'"}&public={"method":"vdian.order.get","access_token":"'.$ACC_TOKEN.'","version":"1.0","format":"json"}';
+        $json=file_get_contents($TOKEN_URL);
+        $result=json_decode($json,true);
+        return $result['result'];
+    }
+    //发货操作
+    public function fa_huo($dingdan){
+        
+     $sql = "SELECT `token` FROM `gdpu_token` where `Id`='2'";
+        $result=mysql_query($sql);
+        $array=mysql_fetch_array($result);
+        $ACC_TOKEN = $array['token'];
+        $TOKEN_URL='http://api.vdian.com/api?param={"order_id":"'.$dingdan.'","express_type":"999","express_no":"1234566788"}&public={"method":"vdian.order.deliver","access_token":"'.$ACC_TOKEN.'","version":"1.0","format":"json"}';
+        $json=file_get_contents($TOKEN_URL);
+        $result=json_decode($json,true);
+        return $result['status'];
+    }
+    //
     public function is_register($open_id){
         $sql = "SELECT * FROM `gdpu_date`  WHERE `open_id` ='$open_id'";
         $result=mysql_query($sql);
@@ -170,6 +207,11 @@ class eight_min_date{
     public function minus_qbt($open_id)
     {
         $sql = "UPDATE `gdpu_date` SET `qbt` = `qbt`-1 WHERE `open_id` = '$open_id' ";
+        mysql_query($sql);
+    }
+    public function update_qbt_dingdan($open_id, $num)
+    {
+        $sql = "UPDATE `gdpu_date` SET `qbt` = `qbt`+'$num' WHERE `open_id` = '$open_id' ";
         mysql_query($sql);
     }
 
@@ -443,13 +485,13 @@ class eight_min_date{
 
     public function check_continue_status($open_id, $target_id) {
         if(self::is_talking($open_id))
-            return "你已经在聊天了喔";
+            return "你已经在聊天了喔\n请先 回复 结束 ，结束聊天再找回";
         if(self::is_talking($target_id))
             return "很遗憾，你想联系的那个ta已经在聊天了喔\n或者尝试等8分钟,再用丘比特之箭射一下？";
         if(self::get_want_to_talk($target_id))
             return "很遗憾，你想联系的那个ta已经在匹配中了喔\n或者尝试等8分钟,再找回她？看看有没有缘分咯";
         if(self::get_want_to_talk($open_id))
-            return "你已经在匹配中了喔,找不回他/她了";
+            return "你已经在匹配中了喔,要找回ta\n请先 回复 取消 ，取消匹配再找回";
         return "success";
     }
 
@@ -474,7 +516,7 @@ class eight_min_date{
             $qbt -= 1;
             return "你的丘比特之箭已射出，成功找回了ta,你的丘比特之箭只剩下".$qbt."支";
         }else {
-            return "你的丘比特之箭已经用光咯，请发专属码邀请其他人获取丘比特之箭:P";
+            return "你的丘比特之箭已经用光咯，请发专属码邀请其他人获取丘比特之箭:P\n或者点击这里获取<a href='http://weidian.com/?userid=326297086&wfr=qfriend'>微店入口<<<<==</a>";
         }
     }
 

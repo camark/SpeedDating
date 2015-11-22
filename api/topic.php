@@ -2,7 +2,7 @@
 class topic{
     function __construct(){
         $con = mysql_connect('localhost','christopher','wudbadmin')or die(mysql_error());
-        mysql_select_db('ours');
+        mysql_select_db('av');
         mysql_query("SET NAMES 'UTF8'");
     }
     //

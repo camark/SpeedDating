@@ -163,7 +163,7 @@ eot;
                     $date_ret = "你已经完成注册了，请点击左下角按钮继续使用\n";
                 }else {
                     //$date_ret = "欢迎首次使用8分钟交友,为了保持活动的宗旨，请遵守以下规则：\n1.在活动中不能问对方真实姓名，每人只有编号;\n2.不能问对方电话号码，微信号;\n3.不能问对方详细地址。\n但是，一旦聊得投机而时间已到，怎么办呢？交友结束后，你可将想结交的朋友的编号记下来，再通过我们的公众号去联系对方哦。\n\n请输入性别： 男或女";
-                    $date_ret = "欢迎来到大学生8分钟交友\n1.今天是六一，回复 六一 获取神秘礼物、\n\n2.点击左下角按钮 即可开始匿名聊天";
+                    $date_ret = "欢迎来到大学城8分钟交友\n1.点击左下角按钮 约会吧，“点我开始”进入匹配聊天 \n聊天框可输入好友发给你的邀请码哦，这样可以获取神秘道具哈\n";
                     $user_info = $date_user->get_user_info($open_id);
                     $sex = $user_info['sex'];
                     if($sex==1){$sex=1;}else{$sex=0;}
@@ -181,6 +181,14 @@ eot;
             elseif ($w->get_event_type () == "click") {
                 $menukey = $w->get_event_key ();
                 switch ($menukey) {
+                case 'dingdan':
+                        if($date_user->is_talking($open_id))
+                        return "你已经在聊天了喔，回复结束 结束聊天，再输入订单号";
+                        $date_user->update_step($open_id, 88);
+                        $date_ret = "请输入订单号，可获取道具（在微店购买道具后会有订单号）\n<a href='http://weidian.com/?userid=326297086&wfr=qfriend'>微店入口<<<<==</a>";
+                        return $date_ret;
+                        //$user_info = $date_user->get_user_info($open_id);
+                        break;
                 case 'qbt':
                         $qbt = $date_user->get_qbt($open_id);
                         $invitation_code = $date_user->get_invitation_code($open_id);
@@ -408,7 +416,32 @@ eot;
             }else {
                 $reply_content = "请输入正确的信息： 男或女";
             }
-        }else if(strstr ( $content, '取消' )) {
+        }else if($step == 88){
+            $step = 4;
+            $date_user->update_step($open_id, $step);
+            $info=$date_user->get_pay($content);
+            //$buyer_info=$info['buyer_info'];
+            $status=$info['status'];
+            $order_id=$info['order_id'];
+            $quantity=$info['quantity'];
+            if($status=='pay'){
+                $flag=$date_user->get_dingdan($content);
+                if($flag){$reply_content = "该订单号已使用过";}
+                else{
+                    $status_reason=$date_user->fa_huo($content);
+                    $date_user->charu_dingdan($open_id,$content);
+                    if($status_reason['status_reason']=="success"){
+                        $date_user->update_qbt_dingdan($open_id,$quantity);
+                    $qbt=$date_user->get_qbt($open_id);
+
+                    $reply_content = "您购买了".$quantity."支丘比特之箭\n您现在拥有".$qbt."支丘比特之箭";
+                    }else{$reply_content ="系统繁忙，请重试";}
+
+                    }
+            }else if($status=='unpay'){$reply_content = "该订单号，您还没有支付\n<a href='http://weidian.com/?userid=326297086&wfr=qfriend'>点击支付</a>";}
+            else{$reply_content = "您的订单号不存在或已使用过\n<a href='http://weidian.com/?userid=326297086&wfr=qfriend'>微店入口</a>";}
+        }
+        else if(strstr ( $content, '取消' )) {
             if($date_user->get_want_to_talk($open_id) == 1) {
                 $date_user->update_want_to_talk_to_zero($open_id);
                 $reply_content = "你已经成功取消匹配状态\n请按[约会吧]按钮，再点[点我开始]按钮开始约会";
@@ -420,6 +453,10 @@ eot;
                     $reply_content = "#title|送你一份奇葩礼物?@title|点此获得你专属的奇葩礼物xD。#url|".$url;
                     $reply_content = self::replypic($reply_content);
                     return $reply_content;
+        }else if(strstr ( $content, '订单' )){
+            $date_user->update_step($open_id, 88);
+                        $date_ret = "请输入订单号，可获取道具（在微店购买道具后会有订单号）\n<a href='http://weidian.com/?userid=326297086&wfr=qfriend'>微店入口</a>";
+                        return $date_ret;
         }
         else {
             $reply_content = "#title|什么是八分钟约会呢?@title|点此进入了解详情,点击8分钟约会按钮使用,在8分钟内遇见‘她/他’。#url|http://mp.weixin.qq.com/s?__biz=MzAwNjUxMzcwNA==&mid=207779817&idx=1&sn=9262e599f34718f70fa6e51caf4dd367#rd#pic|http://av.jejeso.com/Ours/eightmins/8.jpg";

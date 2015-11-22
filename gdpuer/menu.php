@@ -38,6 +38,11 @@ $data='{
                     "type":"click",
                    "name":"找回Ta续聊",
                     "key": "xuliao"
+                },
+                {
+                    "type":"click",
+                   "name":"获取续聊道具",
+                    "key": "dingdan"
                 }
                
                 
